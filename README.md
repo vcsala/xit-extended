@@ -6,6 +6,7 @@ This extension provides support for handling tasks in [xit!](https://xit.jotaen.
 - [Commands](#commands)
 - [Shortcuts](#shortcuts)
 - [Snippets](#snippets)
+- [Completion](#completion)
 
 ## Syntax Highlighting
 
@@ -90,3 +91,7 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 - `o`/`~` - Obsolete (`[~] `)
 - `x` - Checked (`[x] `)
 - `d` - Insert current date (in -> YYYY-MM-DD format)
+
+## Completion
+
+Typing `#`, the extensions offers the tags already exist in the file as a completion.
