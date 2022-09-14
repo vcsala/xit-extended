@@ -1,4 +1,5 @@
 {
+    "icon": "assets/icon.png",
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
