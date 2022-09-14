@@ -27,7 +27,7 @@ function toggleStatus(status: ItemStatus): ItemStatus {
 		case ItemStatus.Completed: return ItemStatus.Open;
 		case ItemStatus.Obsolete: return ItemStatus.Completed;
 		default: return ItemStatus.Unknown;
-	}	
+	}
 }
 
 function translateStatus(status: ItemStatus): string {
@@ -51,7 +51,7 @@ function formatDate(date: Date): string {
 }
 
 function replaceLine(document: vscode.TextDocument, builder: vscode.TextEditorEdit, line_index: number, new_text: string) {
-	if (line_index >= 0 &&  line_index < document.lineCount) {
+	if (line_index >= 0 && line_index < document.lineCount) {
 		const line = document.lineAt(line_index).text;
 		const range = new vscode.Range(line_index, 0, line_index, line.length);
 		builder.replace(range, new_text);
@@ -69,9 +69,9 @@ class XitTask {
 		this.end = lineNo;
 	}
 
-	add_line(text: string, lineNo: number) {
+	add_line(text: string) {
 		this.lines.push(text);
-		this.end = lineNo;
+		this.end++;
 	}
 
 	get_text(): string {
@@ -103,7 +103,7 @@ class XitTask {
 
 		this.lines[0] = line;
 	}
-	
+
 	shift_status() {
 		const status = this.get_status();
 		const new_status = shiftStatus(status);
@@ -117,10 +117,10 @@ class XitTask {
 	}
 
 	get_priority(): number {
-		const match = /(?<=^\[[ x@~]\] )(?:(?:!+\.*)|(?:\.*!+)|(?:\.+))/.exec(this.get_text());
+		const prio_str = this.get_priority_string();
 
-		if (match) {
-			return (match[0].match(/!/g) || []).length;
+		if (prio_str != "") {
+			return (prio_str.match(/!/g) || []).length;
 		}
 
 		return 0;
@@ -158,7 +158,7 @@ class XitTask {
 		let priority = this.get_priority_string();
 
 		if (priority.startsWith("!")) {
-			 priority = "!" + priority;
+			priority = "!" + priority;
 		} else {
 			priority = priority + "!";
 		}
@@ -171,11 +171,11 @@ class XitTask {
 			let priority = this.get_priority_string();
 
 			if (priority.startsWith("!")) {
-				 priority = priority.substring(1);
+				priority = priority.substring(1);
 			} else {
 				priority = priority.substring(0, priority.length - 1);
 			}
-	
+
 			this.set_priority(priority);
 		}
 	}
@@ -247,7 +247,7 @@ class XitTask {
 	}
 
 	get_tags(): string[] {
-        const re = /#(?:(?:(\S+)=\"[^\"]*\")|(?:(\S+)='[^']*')|(?:(\S+)=\S+)|(\S+))/g;
+		const re = /#(?:(?:(\S+)=\"[^\"]*\")|(?:(\S+)='[^']*')|(?:(\S+)=\S+)|(\S+))/g;
 		const text = this.get_text();
 		let match = re.exec(text);
 		let output: string[] = []
@@ -258,7 +258,7 @@ class XitTask {
 			if (tag != "") {
 				output.push(tag);
 			}
-			
+
 			match = re.exec(text);
 		}
 
@@ -273,14 +273,6 @@ class XitTask {
 			replaceLine(document, builder, i, line);
 			index++;
 		}
-	}
-
-	update_start(start: number): number {
-		this.start = start;
-		const next = start + this.lines.length;
-		this.end = next - 1;
-
-		return next;
 	}
 
 	to_string(): string {
@@ -316,7 +308,7 @@ class XitGroup {
 	}
 
 	get_folding_range(): vscode.FoldingRange {
-		return {start: this.get_header_row(), end: this.end};
+		return { start: this.get_header_row(), end: this.end };
 	}
 
 	get_symbol(document: vscode.TextDocument): vscode.SymbolInformation {
@@ -338,7 +330,7 @@ class XitGroup {
 		if (this.start < 0) {
 			this.start = lineNo;
 		}
-		
+
 		this.end = lineNo;
 
 		if (text.trim() != "" && this.title_row < 0) {
@@ -383,7 +375,7 @@ class XitGroup {
 			return [header, body].join("\n");
 		}
 
-		return header;				
+		return header;
 	}
 }
 
@@ -399,7 +391,7 @@ function compareTasks(a: XitTask, b: XitTask): number {
 	if (a_due_date < b_due_date) {
 		return -1;
 	}
-	
+
 	if (a_due_date > b_due_date) {
 		return 1;
 	}
@@ -421,38 +413,38 @@ export function readContent(document: vscode.TextDocument): XitGroup[] {
 	let current_group: XitGroup | null = null;
 	let current_task: XitTask | null = null;
 
-    for (let i = 0; i < document.lineCount; i++) {
-        const line = document.lineAt(i);
-        if (line.text.startsWith("\[")) {
-            if (current_task === null) {
-                current_task = new XitTask(line.text, i);
-            }
-            else {
-                if (current_group === null) {
-                    current_group = new XitGroup();
-                }
-                current_group?.add_task(current_task);
-                current_task = new XitTask(line.text, i);
-            }
-        }
-        else if (line.text.startsWith("    ") && line.text.trim() != "") {
-            current_task?.add_line(line.text, i);
-        }
-        else {
-            if (current_group === null) {
-                current_group = new XitGroup();
-            } else {
-                if (current_task !== null) {
-                    current_group.add_task(current_task);
+	for (let i = 0; i < document.lineCount; i++) {
+		const line = document.lineAt(i);
+		if (line.text.startsWith("\[")) {
+			if (current_task === null) {
+				current_task = new XitTask(line.text, i);
+			}
+			else {
+				if (current_group === null) {
+					current_group = new XitGroup();
+				}
+				current_group?.add_task(current_task);
+				current_task = new XitTask(line.text, i);
+			}
+		}
+		else if (line.text.startsWith("    ") && line.text.trim() != "") {
+			current_task?.add_line(line.text);
+		}
+		else {
+			if (current_group === null) {
+				current_group = new XitGroup();
+			} else {
+				if (current_task !== null) {
+					current_group.add_task(current_task);
 					current_task = null;
-                    groups.push(current_group);
-                    current_group = new XitGroup();
-                }    
-            }
+					groups.push(current_group);
+					current_group = new XitGroup();
+				}
+			}
 
-            current_group.add_header(line.text, i);
-        }
-    }
+			current_group.add_header(line.text, i);
+		}
+	}
 
 	if (current_group !== null) {
 		groups.push(current_group);
@@ -475,7 +467,7 @@ function eliminateDuplicates<T extends unknown[]>(array: T): T {
 	return Array.from(new Set(array)) as T;
 }
 
-export function getSelectedLines(editor: vscode.TextEditor) {
+function getSelectedLines(editor: vscode.TextEditor) {
 	return eliminateDuplicates(
 		editor.selections
 			.flatMap(selection => range(selection.start.line, selection.end.line))
@@ -483,20 +475,20 @@ export function getSelectedLines(editor: vscode.TextEditor) {
 	);
 }
 
-export function findFirstLine(document: vscode.TextDocument, line: number): number {
+function findFirstLine(document: vscode.TextDocument, line: number): number {
 	let index = line;
 
 	while (index > 0) {
 		const text = document.lineAt(index).text;
-	
+
 		const match = /^\[([^\]])*\]/.exec(text);
-		
+
 		if (match) {
 			return index;
 		}
-	
+
 		const match_indented = /^ {4}\S/.exec(text);
-		
+
 		if (!match_indented) {
 			return -1;
 		}
@@ -523,7 +515,7 @@ function readTask(document: vscode.TextDocument, line_no: number): XitTask | nul
 	line = index < document.lineCount ? document.lineAt(index).text : "";
 
 	while (index < document.lineCount && line.startsWith("    ") && line.trim() != "") {
-		current_task?.add_line(document.lineAt(index).text, index);
+		current_task?.add_line(document.lineAt(index).text);
 		index++;
 		line = index < document.lineCount ? document.lineAt(index).text : "";
 	}
@@ -570,7 +562,12 @@ export function readSelectedTasks(editor: vscode.TextEditor): XitTask[] {
 	return tasks;
 }
 
-export function replaceAll(document: vscode.TextDocument, builder: vscode.TextEditorEdit, content: string) {
+function groupsToString(groups: XitGroup[]): string {
+	return groups.map((group) => group.to_string()).join("\n");
+}
+
+export function replaceAll(document: vscode.TextDocument, builder: vscode.TextEditorEdit, groups: XitGroup[]) {
+	const content = groupsToString(groups);
 	let end_char = document.lineAt(document.lineCount - 1).text.length;
 	var range = new vscode.Range(0, 0, document.lineCount - 1, end_char);
 	builder.replace(range, content)
@@ -587,8 +584,4 @@ export function selectionHasCheckboxes(editor: vscode.TextEditor) {
 	}
 
 	return false;
-}
-
-export function groupsToString(groups: XitGroup[]): string {
-	return groups.map((group) => group.to_string()).join("\n");
 }

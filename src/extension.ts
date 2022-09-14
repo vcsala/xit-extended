@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { subscribeToDocumentChange } from './diagnostics';
-import { readContent, selectionHasCheckboxes, readSelectedTasks, replaceAll, groupsToString } from './content';
+import { readContent, selectionHasCheckboxes, readSelectedTasks, replaceAll } from './content';
 import { XitFoldingRangeProvider } from './folding';
 import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
@@ -12,7 +12,7 @@ function clearItems(editor: vscode.TextEditor) {
 
 	editor.edit(builder => {
 		groups.forEach((group) => group.delete_tasks());
-		replaceAll(editor.document, builder, groupsToString(groups));
+		replaceAll(editor.document, builder, groups);
 	});
 }
 
@@ -21,7 +21,7 @@ function sortTasks(editor: vscode.TextEditor) {
 
 	editor.edit(builder => {
 		groups.forEach((group) => group.sort_tasks());
-		replaceAll(editor.document, builder, groupsToString(groups));
+		replaceAll(editor.document, builder, groups);
 	});
 }
 

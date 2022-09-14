@@ -6,16 +6,12 @@ export class XitFoldingRangeProvider implements vscode.FoldingRangeProvider {
 		const groups = readContent(document);
 		let ranges: vscode.FoldingRange[] = [];
 
-		for (let i = 0; i < groups.length; i++) {
-			const group = groups[i];
-
+		for (const group of groups) {
 			if (group.is_task_group()) {
 				ranges.push(group.get_folding_range());
 			}
 
-			for (let j = 0; j < group.tasks.length; j++) {
-				const task = group.tasks[j];
-
+			for (const task of group.tasks) {
 				if (task.start != task.end) {
 					ranges.push({start: task.start, end: task.end});
 				}

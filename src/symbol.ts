@@ -8,9 +8,7 @@ export class XitDocumentSymbolProvider implements vscode.DocumentSymbolProvider 
 			const groups = readContent(document);
 			let symbols: vscode.SymbolInformation[] = [];
 
-			for (let i = 0; i < groups.length; i++) {
-				const group = groups[i];
-	
+			for (const group of groups) {
 				if (group.is_task_group()) {
 					symbols.push(group.get_symbol(document));
 				}
