@@ -4,7 +4,7 @@
     "description": "Language support handling todo lists using xit! syntax.",
     "version": "0.0.15",
     "publisher": "vcsala",
-    "repository": "https://github.com/tscpp/xit-vscode",
+    "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
         "vscode": "^1.66.0"
     },
