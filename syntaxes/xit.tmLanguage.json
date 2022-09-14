@@ -1,0 +1,103 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "xit!",
+	"patterns": [
+		{
+			"include": "#item"
+		},
+		{
+			"include": "#title"
+		}
+	],
+	"repository": {
+		"title": {
+			"name": "markup.underline.xit, markup.other.task.title.xit",
+			"match": "^[^\\s].*"
+		},
+		"item": {
+			"patterns": [
+				{
+					"include": "#open-item"
+				},
+				{
+					"include": "#closed-item"
+				}
+			]
+		},
+		"open-item": {
+			"begin": "^(?:(\\[ *\\])|(\\[@\\]))[^\\S\\n]*(.*(?= |$))",
+			"beginCaptures": {
+				"1": {
+					"name": "variable.function.xit, markup.other.task.checkbox.open.xit"
+				},
+				"2": {
+					"name": "storage.type.xit, markup.other.task.checkbox.ongoing.xit"
+				},
+				"3": {
+					"patterns": [
+						{
+							"include": "#item-description"
+						}
+					]
+				}
+			},
+			"while": "    (\\S.*)",
+			"whileCaptures": {
+				"1": {
+					"patterns": [
+						{
+							"include": "#item-description"
+						}
+					]
+				}
+			}
+		},
+		"closed-item": {
+			"begin": "^(?:(\\[x\\])|(\\[~\\]))[^\\S\\n]*(.*(?= |$))",
+			"beginCaptures": {
+				"1": {
+					"name": "markup.inserted.xit, markup.other.task.checkbox.checked.xit"
+				},
+				"2": {
+					"name": "comment.xit, markup.other.task.checkbox.obsolete.xit"
+				},
+				"3": {
+					"name": "comment.xit, markup.strikethrough.xit",
+					"patterns": [
+						{
+							"include": "#item-description"
+						}
+					]
+				}
+			},
+			"while": "    (\\S.*)",
+			"whileCaptures": {
+				"1": {
+					"name": "comment.xit, markup.strikethrough.xit",
+					"patterns": [
+						{
+							"include": "#item-description"
+						}
+					]
+				}
+			}
+		},
+		"item-description": {
+			"patterns": [
+				{
+					"match": "(?<=^\\[[ x@~]\\] )(?:(?:!+\\.*)|(?:\\.*!+))",
+					"name": "markup.deleted.xit, markup.other.task.priority.xit"
+				},
+				{
+					"name": "constant.other.xit, markup.other.task.date.xit",
+					"match": "-> [0-9]{4}-([QW]?[0-9]{2}|[0-9]{2}-[0-9]{2}) "
+				},
+				{
+					"name": "comment.block.documentation.xit, markup.other.task.tag.xit",
+					"match": "\\#(?:(?:\\S+=\"[^\"]*\")|(?:\\S+='[^']*')|(?:[^\\s\\.]+))"
+				}
+			]
+		}
+	},
+	"scopeName": "source.xit"
+}

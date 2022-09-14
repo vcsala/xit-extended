@@ -1,0 +1,119 @@
+{
+    "name": "xit-extended",
+    "displayName": "xit! extended",
+    "description": "Language support handling todo lists using xit! syntax.",
+    "version": "0.0.15",
+    "publisher": "vcsala",
+    "repository": "https://github.com/tscpp/xit-vscode",
+    "engines": {
+        "vscode": "^1.66.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Snippets",
+        "Other"
+    ],
+	"activationEvents": [
+        "onCommand:xit.suggest",
+        "onCommand:xit.toggle",
+        "onCommand:xit.shuffle",
+        "onCommand:xit.clearItems",
+        "onCommand:xit.sortItems",
+        "onCommand:xit.increasePriority",
+        "onCommand:xit.decreasePriority",
+        "onLanguage:xit"
+	],
+	"main": "./dist/extension.js",
+	"scripts": {
+		"vscode:prepublish": "npm run build",
+		"build": "tsc",
+		"watch": "tsc -w"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.66.0",
+		"@types/node": "14.x",
+		"typescript": "^4.5.5"
+	},
+    "capabilities" : {
+        "completionProvider" : {
+            "resolveProvider": "true",
+            "triggerCharacters": [ "#" ]
+        }
+    },
+    "contributes": {
+        "languages": [{
+            "id": "xit",
+            "aliases": ["xit!", "xit"],
+            "extensions": [".xit"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "xit",
+            "scopeName": "source.xit",
+            "path": "./syntaxes/xit.tmLanguage.json"
+        }],
+        "keybindings": [
+            {
+                "command": "xit.suggest",
+                "key": "ctrl+space",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.toggle",
+                "key": "ctrl+shift+space",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.shuffle",
+                "key": "ctrl+alt+d",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.increasePriority",
+                "key": "ctrl+up",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.decreasePriority",
+                "key": "ctrl+down",
+                "when": "editorFocus && editorLangId == 'xit'"
+            }
+        ],
+        "commands": [
+            {
+                "title": "XIT: Suggest (internal)",
+                "command": "xit.suggest"
+            },
+            {
+                "title": "XIT: Toggle Checkbox",
+                "command": "xit.toggle"
+            },
+            {
+                "title": "XIT: Shuffle Checkbox State",
+                "command": "xit.shuffle"
+            },
+            {
+                "title": "XIT: Increase Priority",
+                "command": "xit.increasePriority"
+            },
+            {
+                "title": "XIT: Decrease Priority",
+                "command": "xit.decreasePriority"
+            },
+            {
+                "title": "XIT: Remove Completed and Obsolete",
+                "command": "xit.clearItems"
+            },
+            {
+                "title": "XIT: Sort",
+                "command": "xit.sortItems"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "xit",
+                "path": "./snippets.json"
+            }
+        ]
+    }
+}

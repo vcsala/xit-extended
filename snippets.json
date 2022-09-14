@@ -1,0 +1,39 @@
+{
+    "Unchecked Item (u)": {
+        "prefix": "u",
+        "body": ["[ ] "],
+        "description": "Unchecked item"
+    },
+    "Checked Item (x)": {
+        "prefix": "x",
+        "body": ["[x] "],
+        "description": "Checked item"
+    },
+    "Ongoing Item (a)": {
+        "prefix": "a",
+        "body": ["[@] "],
+        "description": "Ongoing item"
+    },
+    "Ongoing Item (@)": {
+        "prefix": "@",
+        "body": ["[@] "],
+        "description": "Ongoing item"
+    },
+    "Obsolete Item (o)": {
+        "prefix": "o",
+        "body": ["[~] "],
+        "description": "Obsolete item"
+    },
+    "Obsolete Item (~)": {
+        "prefix": "~",
+        "body": ["[~] "],
+        "description": "Obsolete item"
+    },
+    "Current date (->)": {
+        "prefix": "d",
+        "description": "Insert curent date",
+        "body": [
+            "-> $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE"
+        ]    
+    }
+}
