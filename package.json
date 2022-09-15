@@ -48,6 +48,40 @@
             "extensions": [".xit"],
             "configuration": "./language-configuration.json"
         }],
+        "menus": {
+            "editor/context": [
+              {
+                "when": "resourceLangId == xit",
+                "command": "xit.sortItems",
+                "group": "xit_commands@5"
+              },
+              {
+                "when": "resourceLangId == xit",
+                "command": "xit.clearItems",
+                "group": "xit_commands@6"
+              },
+              {
+                "when": "resourceLangId == xit",
+                "command": "xit.increasePriority",
+                "group": "xit_commands@3"
+              },
+              {
+                "when": "resourceLangId == xit",
+                "command": "xit.decreasePriority",
+                "group": "xit_commands@4"
+              },
+              {
+                "when": "resourceLangId == xit",
+                "command": "xit.shuffle",
+                "group": "xit_commands@2"
+              },
+              {
+                "when": "resourceLangId == xit",
+                "command": "xit.toggle",
+                "group": "xit_commands@1"
+              }
+            ]
+          },      
         "grammars": [{
             "language": "xit",
             "scopeName": "source.xit",
@@ -106,7 +140,7 @@
                 "command": "xit.clearItems"
             },
             {
-                "title": "XIT: Sort",
+                "title": "XIT: Sort by Due Date and Priority",
                 "command": "xit.sortItems"
             }
         ],
