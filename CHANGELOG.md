@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added
 
-- Adding commit `=` as a commit character for the tag completions
+- Adding `=` as a commit character for the tag completions
 
 ## [0.1.0] - 2022-09-15
 
