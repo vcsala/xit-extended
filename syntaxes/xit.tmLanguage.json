@@ -12,7 +12,7 @@
 	"repository": {
 		"title": {
 			"name": "markup.underline.xit, markup.other.task.title.xit",
-			"match": "^[^\\s].*"
+			"match": "^\\S.*"
 		},
 		"item": {
 			"patterns": [
