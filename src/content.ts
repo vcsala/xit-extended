@@ -447,6 +447,10 @@ export function readContent(document: vscode.TextDocument): XitGroup[] {
 	}
 
 	if (current_group !== null) {
+		if (current_task !== null) {
+			current_group.add_task(current_task);
+		}
+
 		groups.push(current_group);
 	}
 
