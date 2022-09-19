@@ -105,6 +105,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 	let in_todo = false;
 	let have_title = false;
 	let have_date = false;
+	let is_blank = false;
 
 	for (let i = 0; i < document.lineCount; i++) {
 		let line = document.lineAt(i);
@@ -164,8 +165,11 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 
 				in_todo = true;
 				have_title = false;
+				is_blank = false;
 			}
 		} else if (line.text.startsWith("    ") && line.text.trim() != "") {
+			is_blank = false;
+
 			if (!in_todo) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
 				const diagnostic = new vscode.Diagnostic(range, "Only multiline tasks should be indented", vscode.DiagnosticSeverity.Warning);
@@ -197,6 +201,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 				}
 			}
 		} else if (line.text.trim() == "") {
+			is_blank = true;
 			in_todo = false;
 			have_date = false;
 
@@ -207,6 +212,8 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 				diagnostics.push(diagnostic);
 			}
 		} else {
+			is_blank = false;
+			
 			if (have_title) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
 				const diagnostic = new vscode.Diagnostic(range, "A task group can have only one title",
@@ -218,13 +225,23 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 
 			if (match) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
-				const diagnostic = new vscode.Diagnostic(range, "Title must not start with blank character or opening bracket character ([]",
+				const diagnostic = new vscode.Diagnostic(range, "Title must not start with blank character or opening bracket character ([)",
 					vscode.DiagnosticSeverity.Warning);
 				diagnostics.push(diagnostic);
 			}
 
 			have_title = true;
 		}
+	}
+
+	if (!is_blank) {
+		const index = document.lineCount - 1
+		const line = document.lineAt(index);
+
+		const range = new vscode.Range(index, line.text.length, index, line.text.length);
+		const diagnostic = new vscode.Diagnostic(range, "There should be a newline at the end of the file",
+			vscode.DiagnosticSeverity.Warning);
+		diagnostics.push(diagnostic);
 	}
 
 	return diagnostics;
