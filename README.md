@@ -1,4 +1,4 @@
-# xit-extended
+# xit! extended
 
 This extension provides support for handling tasks in [xit!](https://xit.jotaen.net/) format.
 
