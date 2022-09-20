@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [0.1.2] - 2022-09-15
+## [0.1.3] - 2022-09-15
 
 Bug fix release.
 
