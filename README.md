@@ -73,7 +73,7 @@ There are several commands available to help users managing their tasks:
 - XIT: Toggle Checkbox - Toggle all selected checkboxes.
 - XIT: Shuffle Checkbox State - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
 - XIT: Remove Completed and Obsolete - delete all obsolete and completed items.
-- XIT: Sort - sort tasks in each group by their due date (ascending) and priority (descending).
+- XIT: Sort by Due Date and Priority - sort tasks in each group by their due date (ascending) and priority (descending).
 - XIT: Increase priority - increase the priority of the selected tasks.
 - XIT: Decrease priority - decrease the priority of the selected tasks (if possible).
 
