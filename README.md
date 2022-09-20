@@ -4,6 +4,7 @@ This extension provides support for handling tasks in [xit!](https://xit.jotaen.
 
 - [Syntax Highlighting](#syntax-highlighting)
 - [Commands](#commands)
+- [Context menu](#context-menu)
 - [Shortcuts](#shortcuts)
 - [Snippets](#snippets)
 - [Completion](#completion)
@@ -73,6 +74,12 @@ There are several commands available to help users managing their tasks:
 - XIT: Shuffle Checkbox State - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
 - XIT: Remove Completed and Obsolete - delete all obsolete and completed items.
 - XIT: Sort - sort tasks in each group by their due date (ascending) and priority (descending).
+- XIT: Increase priority - increase the priority of the selected tasks.
+- XIT: Decrease priority - decrease the priority of the selected tasks (if possible).
+
+## Context menu
+
+All commands, excpet the XIT: Suggest command, is available in the editor context menu (right click on the document with the mouse).
 
 ## Shortcuts
 

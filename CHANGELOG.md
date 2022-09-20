@@ -6,6 +6,18 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.2] - 2022-09-15
+
+Bug fix release.
+
+### Added
+
+- New warning if the file does not have a newline character at the end
+
+### Changed
+
+- Fixing issue loosing the last todo item if there is no newline character at the end of the file
+
 ## [0.1.1] - 2022-09-15
 
 First alpha release based on tscpp's [xit extension](https://github.com/tscpp/xit-vscode).
