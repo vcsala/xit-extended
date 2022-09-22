@@ -4,3 +4,4 @@ src/**
 .gitignore
 vsc-extension-quickstart.md
 tsconfig.json
+**/*.ts
