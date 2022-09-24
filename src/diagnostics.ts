@@ -17,11 +17,11 @@ function isValid(year: number, month: number, day: number): boolean {
 }
 
 function getDate(line: string): readonly [string, number] {
-	const re = /-> [0-9]{4}-([QW]?[0-9]{2}|[0-9]{2}-[0-9]{2}) /;
+	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
 	const match = re.exec(line);
 
 	if (match) {
-		return [match[0].substring(2).trim(), match.index + 3] as const;
+		return [match[2].trim().replace("/", "-"), match.index + 4] as const;
 	}
 
 	return ["", -1] as const;
@@ -31,9 +31,9 @@ function checkDate(date: string): string {
 	const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
 
 	if (match_full) {
-		const year: number = parseInt(date.substr(0, 4));
-		const month: number = parseInt(date.substr(5, 2));
-		const day: number = parseInt(date.substr(8));
+		const year: number = parseInt(date.substring(0, 4));
+		const month: number = parseInt(date.substring(5, 7));
+		const day: number = parseInt(date.substring(8));
 
 		if (!isValid(year, month, day)) {
 			return "Invalid month or day";
@@ -43,19 +43,19 @@ function checkDate(date: string): string {
 	const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
 
 	if (match_month) {
-		const year: number = parseInt(date.substr(0, 4));
-		const month: number = parseInt(date.substr(5));
+		const year: number = parseInt(date.substring(0, 4));
+		const month: number = parseInt(date.substring(5, 7));
 
 		if (month < 1 || month > 12) {
 			return "Invalid monht";
 		}
 	}
 
-	const match_quarter = /[0-9]{4}-Q[0-9]{2}/.exec(date);
+	const match_quarter = /[0-9]{4}-Q[0-9]/.exec(date);
 
 	if (match_quarter) {
-		const year: number = parseInt(date.substr(0, 4));
-		const quarter: number = parseInt(date.substr(6));
+		const year: number = parseInt(date.substring(0, 4));
+		const quarter: number = parseInt(date.substring(6));
 
 		if (quarter < 1 || quarter > 4) {
 			return "Invalid quarter";
@@ -65,8 +65,8 @@ function checkDate(date: string): string {
 	const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
 
 	if (match_week) {
-		const year: number = parseInt(date.substr(0, 4));
-		const week: number = parseInt(date.substr(6));
+		const year: number = parseInt(date.substring(0, 4));
+		const week: number = parseInt(date.substring(6));
 
 		if (week < 1 || week > 52) {
 			return "Invalid week number";
@@ -87,7 +87,7 @@ function getPriority(line: string): string {
 }
 
 function checkPriority(priority: string): string {
-	if (priority.startsWith(".") && priority.endsWith(".")) {
+	if (priority.startsWith(".") && priority.endsWith(".") && priority.indexOf("!") > -1) {
 		return "The dots should appear either before or after the exclamation mark(s). (So they can neither appear in between nor on both sides.)";
 	}
 
@@ -100,7 +100,16 @@ function checkPriority(priority: string): string {
 	return "";
 }
 
+enum ParsingState {
+	Start,
+	BlankLine,
+	Title,
+	TaskHead,
+	TaskBody
+}
+
 function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
+	let parsing_state: ParsingState = ParsingState.Start;
 	let diagnostics: vscode.Diagnostic[] = [];
 	let in_todo = false;
 	let have_title = false;
@@ -126,16 +135,9 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 						vscode.DiagnosticSeverity.Warning);
 					diagnostics.push(diagnostic);
 				}
+
+				parsing_state = ParsingState.Title;
 			} else {
-				const match_first_char = /^\[[ x@~]\] \s/.exec(line.text);
-
-				if (match_first_char) {
-					const range = new vscode.Range(i, 4, i, 4);
-					const diagnostic = new vscode.Diagnostic(range, "The checkbox and the description should be separated only with one space.",
-						vscode.DiagnosticSeverity.Warning);
-					diagnostics.push(diagnostic);
-				}
-
 				const date_match = getDate(line.text);
 
 				if (date_match[1] > 0) {
@@ -163,26 +165,22 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 					}
 				}
 
-				in_todo = true;
-				have_title = false;
-				is_blank = false;
+				parsing_state = ParsingState.TaskHead;
 			}
 		} else if (line.text.startsWith("    ") && line.text.trim() != "") {
-			is_blank = false;
-
-			if (!in_todo) {
+			if (parsing_state != ParsingState.TaskHead && parsing_state != ParsingState.TaskBody) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
 				const diagnostic = new vscode.Diagnostic(range, "Only multiline tasks should be indented", vscode.DiagnosticSeverity.Warning);
 				diagnostics.push(diagnostic);
-			} else {
-				const match = /^ {4}\S/.exec(line.text);
 
-				if (!match) {
+				if (parsing_state != ParsingState.Start && parsing_state != ParsingState.BlankLine) {
 					const range = new vscode.Range(i, 0, i, line.text.length);
-					const diagnostic = new vscode.Diagnostic(range, "Wrong indentation (exactly 4 spaces are expected)", vscode.DiagnosticSeverity.Warning);
-					diagnostics.push(diagnostic);
+					const diagnostic = new vscode.Diagnostic(range, "Title should be separated by a blank line from a preceding item.", vscode.DiagnosticSeverity.Warning);
+					diagnostics.push(diagnostic);	
 				}
 
+				parsing_state = ParsingState.Title;
+			} else {
 				if (!have_date) {
 					const date_match = getDate(line.text);
 
@@ -199,28 +197,18 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 						have_date = true;
 					}
 				}
+
+				parsing_state = ParsingState.TaskBody;
 			}
 		} else if (line.text.trim() == "") {
-			is_blank = true;
-			in_todo = false;
-			have_date = false;
-
-			if (have_title) {
-				const range = new vscode.Range(i, 0, i, line.text.length);
-				const diagnostic = new vscode.Diagnostic(range, "No blank lines are supposed to be between title and the respective tasks",
-					vscode.DiagnosticSeverity.Warning);
-				diagnostics.push(diagnostic);
-			}
+			parsing_state = ParsingState.BlankLine;
 		} else {
-			is_blank = false;
-			
-			if (have_title) {
+			if (parsing_state != ParsingState.Start && parsing_state != ParsingState.BlankLine) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
-				const diagnostic = new vscode.Diagnostic(range, "A task group can have only one title",
-					vscode.DiagnosticSeverity.Warning);
-				diagnostics.push(diagnostic);
+				const diagnostic = new vscode.Diagnostic(range, "Title should be separated by a blank line from a preceding item.", vscode.DiagnosticSeverity.Warning);
+				diagnostics.push(diagnostic);	
 			}
-
+			
 			const match = /^\s+|^\[/.exec(line.text);
 
 			if (match) {
@@ -231,10 +219,12 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 			}
 
 			have_title = true;
+
+			parsing_state = ParsingState.Title;
 		}
 	}
 
-	if (!is_blank) {
+	if (parsing_state != ParsingState.BlankLine) {
 		const index = document.lineCount - 1
 		const line = document.lineAt(index);
 
