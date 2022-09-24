@@ -47,7 +47,7 @@ function checkDate(date: string): string {
 		const month: number = parseInt(date.substring(5, 7));
 
 		if (month < 1 || month > 12) {
-			return "Invalid monht";
+			return "Invalid month";
 		}
 	}
 
@@ -119,7 +119,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 	for (let i = 0; i < document.lineCount; i++) {
 		let line = document.lineAt(i);
 		if (line.text.startsWith("\[")) {
-			const match = /^\[[ x@~]\] /.exec(line.text);
+			const match = /^\[[ x@~]\]( |$)/.exec(line.text);
 
 			if (!match) {
 				const closing_index = line.text.indexOf("]");
@@ -152,7 +152,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 
 					have_date = true;
 				}
-				
+
 				const priority = getPriority(line.text);
 
 				if (priority != "") {
@@ -176,7 +176,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 				if (parsing_state != ParsingState.Start && parsing_state != ParsingState.BlankLine) {
 					const range = new vscode.Range(i, 0, i, line.text.length);
 					const diagnostic = new vscode.Diagnostic(range, "Title should be separated by a blank line from a preceding item.", vscode.DiagnosticSeverity.Warning);
-					diagnostics.push(diagnostic);	
+					diagnostics.push(diagnostic);
 				}
 
 				parsing_state = ParsingState.Title;
@@ -206,9 +206,9 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 			if (parsing_state != ParsingState.Start && parsing_state != ParsingState.BlankLine) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
 				const diagnostic = new vscode.Diagnostic(range, "Title should be separated by a blank line from a preceding item.", vscode.DiagnosticSeverity.Warning);
-				diagnostics.push(diagnostic);	
+				diagnostics.push(diagnostic);
 			}
-			
+
 			const match = /^\s+|^\[/.exec(line.text);
 
 			if (match) {

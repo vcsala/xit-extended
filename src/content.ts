@@ -418,7 +418,7 @@ function compareTasks(a: XitTask, b: XitTask): number {
 }
 
 export function readContent(document: vscode.TextDocument): XitGroup[] {
-	const re = /^\[[ x@~]\] /;
+	const re = /^\[[ x@~]\](?: |$)/;
 
 	let groups: XitGroup[] = [];
 	let current_group: XitGroup | null = null;
