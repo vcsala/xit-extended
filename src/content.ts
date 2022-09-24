@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export const DEBUG = false;
+export const DEBUG = true;
 
 enum ItemStatus {
 	Unknown,
@@ -127,10 +127,10 @@ class XitTask {
 	}
 
 	get_priority_string(): string {
-		const match = /(?<=^\[[ x@~]\] )(?:(?:!+\.*)|(?:\.*!+)|(?:\.+))/.exec(this.get_text());
+		const match = /(?<=^\[[ x@~]\] )((?:!+\.*)|(?:\.*!+)|(?:\.+))(?: |$)/.exec(this.get_text());
 
 		if (match) {
-			return match[0].trim();
+			return match[1].trim();
 		}
 
 		return "";
@@ -181,10 +181,13 @@ class XitTask {
 	}
 
 	get_date(): string {
-		const match = /-> [0-9]{4}-([QW]?[0-9]{2}|[0-9]{2}-[0-9]{2}) /.exec(this.get_text());
+		const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
+		const text = this.get_text();
+		const match = re.exec(text);
 
 		if (match) {
-			return match[0].substring(2).trim();
+			const date = match[2].trim().replace("/", "-");
+			return date;
 		}
 
 		return "";
@@ -247,19 +250,22 @@ class XitTask {
 	}
 
 	get_tags(): string[] {
-		const re = /#(?:(?:(\S+)=\"[^\"]*\")|(?:(\S+)='[^']*')|(?:(\S+)=\S+)|(\S+))/g;
+		const re = /#(?:([\d\w-]+)(?:="[^\"\n]*"|='[^'\n]*'|=[\d\w-]+)?)/g;
 		const text = this.get_text();
-		let match = re.exec(text);
 		let output: string[] = []
 
-		while (match) {
-			const tag = (match[1] ? match[1] : (match[2] ? match[2] : (match[3] ? match[3] : (match[4] ? match[4] : ""))));
+		for (let line of this.lines) {
+			let match = re.exec(text);
 
-			if (tag != "") {
-				output.push(tag);
+			while (match) {
+				const tag = match[1];
+
+				if (tag != "") {
+					output.push(tag);
+				}
+
+				match = re.exec(text);
 			}
-
-			match = re.exec(text);
 		}
 
 		return output;
@@ -276,6 +282,10 @@ class XitTask {
 	}
 
 	to_string(): string {
+		if (DEBUG && this.lines.length > 0) {
+			this.lines[0] = this.lines[0] + " | date: " + this.get_date();
+		}
+
 		return this.lines.join("\n");
 	}
 }
@@ -408,14 +418,16 @@ function compareTasks(a: XitTask, b: XitTask): number {
 }
 
 export function readContent(document: vscode.TextDocument): XitGroup[] {
-	let groups: XitGroup[] = [];
+	const re = /^\[[ x@~]\] /;
 
+	let groups: XitGroup[] = [];
 	let current_group: XitGroup | null = null;
 	let current_task: XitTask | null = null;
 
 	for (let i = 0; i < document.lineCount; i++) {
 		const line = document.lineAt(i);
-		if (line.text.startsWith("\[")) {
+		const match = re.exec(line.text);
+		if (match) {
 			if (current_task === null) {
 				current_task = new XitTask(line.text, i);
 			}
@@ -430,7 +442,21 @@ export function readContent(document: vscode.TextDocument): XitGroup[] {
 		else if (line.text.startsWith("    ") && line.text.trim() != "") {
 			current_task?.add_line(line.text);
 		}
-		else {
+		else if (line.text.trim() == "") {
+			if (current_group === null) {
+				current_group = new XitGroup();
+			} else {
+				if (current_task !== null) {
+					current_group.add_task(current_task);
+					current_task = null;
+				}
+				groups.push(current_group);
+				current_group = new XitGroup();
+			}
+
+			current_group.add_header(line.text, i);
+		}
+		else { // title
 			if (current_group === null) {
 				current_group = new XitGroup();
 			} else {
@@ -447,6 +473,10 @@ export function readContent(document: vscode.TextDocument): XitGroup[] {
 	}
 
 	if (current_group !== null) {
+		if (current_task !== null) {
+			current_group.add_task(current_task);
+		}
+
 		groups.push(current_group);
 	}
 
