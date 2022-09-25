@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
-const tokenTypes = ['class', 'interface', 'enum', 'function', 'variable'];
-const tokenModifiers = ['declaration', 'documentation'];
+const tokenTypes = ['title', 'item', 'checkbox', 'priority', 'due_date', 'tag'];
+const tokenModifiers = ['open', 'closed'];
 const legend = new vscode.SemanticTokensLegend(tokenTypes, tokenModifiers);
 
 class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider {

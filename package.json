@@ -160,6 +160,71 @@
                 "language": "xit",
                 "path": "./snippets.json"
             }
+        ],
+        "semanticTokenTypes": [
+            {
+                "id": "due_date",
+                "superType": "constant",
+                "description": "Due date"
+            },
+            {
+                "id": "title",
+                "superType": "class",
+                "description": "Group title"
+            },
+            {
+                "id": "checkbox",
+                "superType": "constant",
+                "description": "Checkbox"
+            },
+            {
+                "id": "priority",
+                "superType": "constant",
+                "description": "Priority"
+            },
+            {
+                "id": "item",
+                "superType": "variable",
+                "description": "Due date"
+            },
+            {
+                "id": "tag",
+                "superType": "comment",
+                "description": "Tag"
+            }
+        ],
+        "semanticTokenModifiers": [
+            {
+                "id": "open",
+                "description": "Open items"
+            },
+            {
+                "id": "ongoing",
+                "description": "Ongoing items"
+            },
+            {
+                "id": "completed",
+                "description": "Closed items"
+            },
+            {
+                "id": "obsolete",
+                "description": "Obsolete items"
+            }
+        ],
+        "semanticTokenScopes": [
+            {
+                "scopes": {
+                    "checkbox.open": [
+                        "variable.function.xit",
+                        "markup.other.task.checkbox.open.xit"
+                    ]
+                }
+            }
         ]
+    },
+    "configurationDefaults": {
+        "xit": {
+            "editor.semanticHighlighting.enabled": true
+        }
     }
 }
