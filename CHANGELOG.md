@@ -6,12 +6,16 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.4] - 2022-09-20
+
+Release to improve compliance with specification.
+
 ### Changed
 
 - Syntax highlighting is more compliant with the specification
 - Fixing wrong interpretation (e.g, representing quarters) of the specification
 
-## [0.1.3] - 2022-09-15
+## [0.1.3] - 2022-09-20
 
 Bug fix release.
 
