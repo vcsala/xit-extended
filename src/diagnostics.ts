@@ -1,7 +1,7 @@
 import { measureMemory } from 'vm';
 import * as vscode from 'vscode';
 
-function daysInMonth(year: number, month: number): number { // m is 0 indexed: 0-11
+function daysInMonth(year: number, month: number): number { // month is 0 indexed: 0-11
 	switch (month) {
 		case 2:
 			return (year % 4 == 0 && year % 100) || year % 400 == 0 ? 29 : 28;

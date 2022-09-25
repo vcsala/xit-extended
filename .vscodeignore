@@ -5,3 +5,5 @@ src/**
 vsc-extension-quickstart.md
 tsconfig.json
 **/*.ts
+test/**
+**/*.xit
