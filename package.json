@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -174,12 +174,12 @@
             },
             {
                 "id": "checkboxOpen",
-                "superType": "constant",
+                "superType": "storage",
                 "description": "Checkbox"
             },
             {
                 "id": "checkboxOngoing",
-                "superType": "constant",
+                "superType": "keyword",
                 "description": "Checkbox"
             },
             {
@@ -189,12 +189,12 @@
             },
             {
                 "id": "checkboxObsolete",
-                "superType": "comment",
+                "superType": "source",
                 "description": "Checkbox"
             },
             {
                 "id": "priority",
-                "superType": "constant",
+                "superType": "string",
                 "description": "Priority"
             },
             {
@@ -239,8 +239,7 @@
                         "markup.other.task.checkbox.checked.xit"
                     ],
                     "checkboxObsolete": [
-                        "variable.parameter.xit", 
-                        "markup.other.task.checkbox.obsolete.xit"
+                        "source.xit"
                     ],
                     "itemClosed": [
                         "comment.xit", 
