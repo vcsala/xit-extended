@@ -4,6 +4,7 @@ import { readContent, selectionHasCheckboxes, readSelectedTasks, replaceAll } fr
 import { XitFoldingRangeProvider } from './folding';
 import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
+import { registerSemanticProvider } from './semantic'
 
 let disposables: vscode.Disposable[] = [];
 
@@ -134,6 +135,8 @@ export function activate(context: vscode.ExtensionContext) {
 			sortTasks(editor);
 		})
 	);
+
+	registerSemanticProvider();
 }
 
 export function deactivate() {

@@ -28,27 +28,19 @@
 			"begin": "^(?:(\\[ \\])|(\\[@\\]))(?:$| (.*(?:$)))",
 			"beginCaptures": {
 				"1": {
-					"name": "variable.function.xit, markup.other.task.checkbox.open.xit"
+					"name": "storage.type.xit, markup.other.task.checkbox.open.xit"
 				},
 				"2": {
-					"name": "storage.type.xit, markup.other.task.checkbox.ongoing.xit"
+					"name": "keyword.contol.xit, markup.other.task.checkbox.ongoing.xit"
 				},
 				"3": {
-					"patterns": [
-						{
-							"include": "#item-description"
-						}
-					]
+					"name": "source.xit"
 				}
 			},
 			"while": "    (.*)",
 			"whileCaptures": {
 				"1": {
-					"patterns": [
-						{
-							"include": "#item-description"
-						}
-					]
+					"name": "source.xit"
 				}
 			}
 		},
@@ -56,47 +48,21 @@
 			"begin": "^(?:(\\[x\\])|(\\[~\\]))(?:$| (.*(?:$)))",
 			"beginCaptures": {
 				"1": {
-					"name": "markup.inserted.xit, markup.other.task.checkbox.checked.xit"
+					"name": "comment.xit, markup.other.task.checkbox.checked.xit"
 				},
 				"2": {
-					"name": "comment.xit, markup.other.task.checkbox.obsolete.xit"
+					"name": "variable.parameter.xit, markup.other.task.checkbox.obsolete.xit"
 				},
 				"3": {
-					"name": "comment.xit, markup.strikethrough.xit",
-					"patterns": [
-						{
-							"include": "#item-description"
-						}
-					]
+					"name": "comment.xit, markup.strikethrough.xit"
 				}
 			},
 			"while": "    (.*)",
 			"whileCaptures": {
 				"1": {
-					"name": "comment.xit, markup.strikethrough.xit",
-					"patterns": [
-						{
-							"include": "#item-description"
-						}
-					]
+					"name": "comment.xit, markup.strikethrough.xit"
 				}
 			}
-		},
-		"item-description": {
-			"patterns": [
-				{
-					"match": "(?<=^\\[[ x@~]\\] )(?:(?:!+\\.*)|(?:\\.*!+)|(?:\\.+))(?= |$)",
-					"name": "markup.deleted.xit, markup.other.task.priority.xit"
-				},
-				{
-					"name": "constant.other.xit, markup.other.task.date.xit",
-					"match": "(?<=[^\\P{P}\\/-]| )-> (?:[0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\\/W?[0-9]{2}|[0-9]{4}\\/Q[0-9]|[0-9]{4}\\/[0-9]{2}\\/[0-9]{2})(?= |$|[^\\P{P}\\/-])"
-				},
-				{
-					"name": "comment.block.documentation.xit, markup.other.task.tag.xit",
-					"match": "\\#(?:[[:digit:][:alpha:]\\-_]+(?:=\"[^\"\\n]*\"|='[^'\\n]*'|=[[:digit:][:alpha:]\\-_]+)?)"
-				}
-			]
 		}
 	},
 	"scopeName": "source.xit"

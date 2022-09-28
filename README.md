@@ -8,6 +8,7 @@ This extension provides support for handling tasks in [xit!](https://xit.jotaen.
 - [Shortcuts](#shortcuts)
 - [Snippets](#snippets)
 - [Completion](#completion)
+- [Semantic Highlight](#semantic-highlight)
 
 ## Syntax Highlighting
 
@@ -102,3 +103,18 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 ## Completion
 
 Typing `#`, the extensions offers the tags already exist in the file as a completion.
+
+## Semantic Highlight
+
+A semantic tokenization is implemented, which helps to be more compliant with  the specification. The following semantic tokens are introduced which can be used in color themes:
+
+- `title` - title lines
+- `itemClosed` - The description of checked (completed) and obsolete items
+- `checkboxOpen` - Open checkbox (`[ ] `)
+- `checkboxOngoing` - Ongoing checkbox (`[@] `)
+- `checkboxCompleted` - Checked (completed) checkbox (`[x] `)
+- `checkboxObsolete` - Obsolete checkbox (`[~] `)
+- `priority` - priority part of the description (only on open or ongoing items)
+- `dueDate` - due date part of the description (only on open or ongoing items)
+- `tag` - tags in description (only on open or ongoing items)
+- `wrongToken` - lines which cannot be parsed (they do not follow the specification)

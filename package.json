@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -173,8 +173,23 @@
                 "description": "Group title"
             },
             {
-                "id": "checkbox",
+                "id": "checkboxOpen",
                 "superType": "constant",
+                "description": "Checkbox"
+            },
+            {
+                "id": "checkboxOngoing",
+                "superType": "constant",
+                "description": "Checkbox"
+            },
+            {
+                "id": "checkboxCompleted",
+                "superType": "comment",
+                "description": "Checkbox"
+            },
+            {
+                "id": "checkboxObsolete",
+                "superType": "comment",
                 "description": "Checkbox"
             },
             {
@@ -183,7 +198,7 @@
                 "description": "Priority"
             },
             {
-                "id": "item",
+                "id": "itemClosed",
                 "superType": "variable",
                 "description": "Due date"
             },
@@ -191,32 +206,60 @@
                 "id": "tag",
                 "superType": "comment",
                 "description": "Tag"
+            },
+            {
+                "id": "wrongToken",
+                "superType": "invalid",
+                "description": "Wrong token"
             }
         ],
         "semanticTokenModifiers": [
             {
-                "id": "open",
-                "description": "Open items"
-            },
-            {
-                "id": "ongoing",
-                "description": "Ongoing items"
-            },
-            {
-                "id": "completed",
-                "description": "Closed items"
-            },
-            {
-                "id": "obsolete",
-                "description": "Obsolete items"
+                "id": "none",
+                "description": "No modifier"
             }
         ],
         "semanticTokenScopes": [
             {
                 "scopes": {
-                    "checkbox.open": [
-                        "variable.function.xit",
+                    "title": [
+                        "markup.underline.xit", 
+                        "markup.other.task.title.xit"
+                    ],
+                    "checkboxOpen": [
+                        "storage.type.xit",
                         "markup.other.task.checkbox.open.xit"
+                    ],
+                    "checkboxOngoing": [
+                        "keyword.control.xit", 
+                        "markup.other.task.checkbox.ongoing.xit"
+                    ],
+                    "checkboxCompleted": [
+                        "comment.xit", 
+                        "markup.other.task.checkbox.checked.xit"
+                    ],
+                    "checkboxObsolete": [
+                        "variable.parameter.xit", 
+                        "markup.other.task.checkbox.obsolete.xit"
+                    ],
+                    "itemClosed": [
+                        "comment.xit", 
+                        "markup.strikethrough.xit"
+                    ],
+                    "dueDate": [
+                        "constant.other.xit", 
+                        "markup.other.task.date.xit"
+                    ],
+                    "priority": [
+                        "markup.deleted.xit", 
+                        "markup.other.task.priority.xit"
+                    ],
+                    "tag": [
+                        "comment.block.documentation.xit", 
+                        "markup.other.task.tag.xit"
+                    ],
+                    "wrongToken": [
+                        "invalid"
                     ]
                 }
             }

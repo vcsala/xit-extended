@@ -6,6 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.2.0] - 2022-09-27
+
+Beta release. Semantic highlighting is added for being more compliant with the specification.
+
+### Changed
+
+- Higlighting uses sematic rules
+
 ## [0.1.4] - 2022-09-20
 
 Release to improve compliance with specification.

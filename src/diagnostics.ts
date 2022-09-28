@@ -1,5 +1,5 @@
-import { measureMemory } from 'vm';
 import * as vscode from 'vscode';
+import { ParsingState, getDate } from './content';
 
 function daysInMonth(year: number, month: number): number { // month is 0 indexed: 0-11
 	switch (month) {
@@ -14,17 +14,6 @@ function daysInMonth(year: number, month: number): number { // month is 0 indexe
 
 function isValid(year: number, month: number, day: number): boolean {
 	return month >= 1 && month <= 12 && day > 0 && day <= daysInMonth(year, month);
-}
-
-function getDate(line: string): readonly [string, number] {
-	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
-	const match = re.exec(line);
-
-	if (match) {
-		return [match[2].trim().replace("/", "-"), match.index + 4] as const;
-	}
-
-	return ["", -1] as const;
 }
 
 function checkDate(date: string): string {
@@ -100,21 +89,10 @@ function checkPriority(priority: string): string {
 	return "";
 }
 
-enum ParsingState {
-	Start,
-	BlankLine,
-	Title,
-	TaskHead,
-	TaskBody
-}
-
 function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 	let parsing_state: ParsingState = ParsingState.Start;
 	let diagnostics: vscode.Diagnostic[] = [];
-	let in_todo = false;
-	let have_title = false;
 	let have_date = false;
-	let is_blank = false;
 
 	for (let i = 0; i < document.lineCount; i++) {
 		let line = document.lineAt(i);
@@ -217,8 +195,6 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 					vscode.DiagnosticSeverity.Warning);
 				diagnostics.push(diagnostic);
 			}
-
-			have_title = true;
 
 			parsing_state = ParsingState.Title;
 		}

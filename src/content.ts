@@ -1,13 +1,22 @@
 import * as vscode from 'vscode';
 
-export const DEBUG = true;
+export const DEBUG = false;
 
-enum ItemStatus {
+export enum ItemStatus {
 	Unknown,
 	Open,
 	Ongoing,
 	Completed,
 	Obsolete
+}
+
+export enum ParsingState {
+	Start,
+	BlankLine,
+	Title,
+	TaskHead,
+	TaskBody,
+	Invalid
 }
 
 function shiftStatus(status: ItemStatus): ItemStatus {
@@ -40,14 +49,46 @@ function translateStatus(status: ItemStatus): string {
 	}
 }
 
+export function compileStatus(char: string): ItemStatus {
+	switch (char) {
+		case " ": return ItemStatus.Open;
+		case "@": return ItemStatus.Ongoing;
+		case "x": return ItemStatus.Completed;
+		case "~": return ItemStatus.Obsolete;
+	}
+
+	return ItemStatus.Unknown;
+}
+
 function pad(n: number, size: number): string {
 	let ns = n.toString();
 	while (ns.length < size) ns = "0" + ns;
 	return ns;
 }
 
+export function getDate(line: string): readonly [string, number] {
+	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
+	const match = re.exec(line);
+
+	if (match) {
+		return [match[2].trim().replace("/", "-"), match.index + 4] as const;
+	}
+
+	return ["", -1] as const;
+}
+
 function formatDate(date: Date): string {
 	return pad(date.getFullYear(), 4) + "-" + pad(date.getMonth() + 1, 2) + "-" + pad(date.getDate(), 2);
+}
+
+export function getPriorityString(text: string): string {
+	const match = /(?<=^\[[ x@~]\] )((?:!+\.*)|(?:\.*!+)|(?:\.+))(?: |$)/.exec(text);
+
+	if (match) {
+		return match[1].trim();
+	}
+
+	return "";
 }
 
 function replaceLine(document: vscode.TextDocument, builder: vscode.TextEditorEdit, line_index: number, new_text: string) {
@@ -82,12 +123,7 @@ class XitTask {
 		const text = this.get_text();
 
 		if (text.startsWith("[")) {
-			switch (text.charAt(1)) {
-				case " ": return ItemStatus.Open;
-				case "@": return ItemStatus.Ongoing;
-				case "x": return ItemStatus.Completed;
-				case "~": return ItemStatus.Obsolete;
-			}
+			return compileStatus(text.charAt(1));
 		}
 
 		return ItemStatus.Unknown;
@@ -117,23 +153,13 @@ class XitTask {
 	}
 
 	get_priority(): number {
-		const prio_str = this.get_priority_string();
+		const prio_str = getPriorityString(this.get_text());
 
 		if (prio_str != "") {
 			return (prio_str.match(/!/g) || []).length;
 		}
 
 		return 0;
-	}
-
-	get_priority_string(): string {
-		const match = /(?<=^\[[ x@~]\] )((?:!+\.*)|(?:\.*!+)|(?:\.+))(?: |$)/.exec(this.get_text());
-
-		if (match) {
-			return match[1].trim();
-		}
-
-		return "";
 	}
 
 	set_priority(new_priority: string) {
@@ -155,7 +181,7 @@ class XitTask {
 	}
 
 	increase_priority() {
-		let priority = this.get_priority_string();
+		let priority = getPriorityString(this.get_text());
 
 		if (priority.startsWith("!")) {
 			priority = "!" + priority;
@@ -168,7 +194,7 @@ class XitTask {
 
 	decrease_priority() {
 		if (this.get_priority() > 0) {
-			let priority = this.get_priority_string();
+			let priority = getPriorityString(this.get_text());
 
 			if (priority.startsWith("!")) {
 				priority = priority.substring(1);
@@ -181,13 +207,10 @@ class XitTask {
 	}
 
 	get_date(): string {
-		const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
-		const text = this.get_text();
-		const match = re.exec(text);
+		const date_match = getDate(this.get_text());
 
-		if (match) {
-			const date = match[2].trim().replace("/", "-");
-			return date;
+		if (date_match[1] > 0) {
+			return date_match[0];
 		}
 
 		return "";
@@ -250,7 +273,7 @@ class XitTask {
 	}
 
 	get_tags(): string[] {
-		const re = /#(?:([\d\w-]+)(?:="[^\"\n]*"|='[^'\n]*'|=[\d\w-]+)?)/g;
+		const re = /#([\p{L}\p{N}_\-]+)(?:=[\p{L}\p{N}_\-]+|="[^"\n]*"|='[^'\n]*')?/ug;
 		const text = this.get_text();
 		let output: string[] = []
 
