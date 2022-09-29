@@ -118,12 +118,12 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 			} else {
 				const date_match = getDate(line.text);
 
-				if (date_match[1] > 0) {
-					const date = date_match[0];
+				if (date_match.index > 0) {
+					const date = date_match.text;
 					const message = checkDate(date);
 
 					if (message != "") {
-						const range = new vscode.Range(i, date_match[1], i, date_match[1] + date_match[0].length);
+						const range = new vscode.Range(i, date_match.index, i, date_match.index + date.length);
 						const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Warning);
 						diagnostics.push(diagnostic);
 					}
@@ -162,12 +162,12 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 				if (!have_date) {
 					const date_match = getDate(line.text);
 
-					if (date_match[1] > 0) {
-						const date = date_match[0];
+					if (date_match.index > 0) {
+						const date = date_match.text;
 						const message = checkDate(date);
 
 						if (message != "") {
-							const range = new vscode.Range(i, date_match[1], i, date_match[1] + date_match[0].length);
+							const range = new vscode.Range(i, date_match.index, i, date_match.index + date.length);
 							const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Warning);
 							diagnostics.push(diagnostic);
 						}

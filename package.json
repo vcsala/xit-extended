@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -163,9 +163,14 @@
         ],
         "semanticTokenTypes": [
             {
-                "id": "due_date",
+                "id": "dueDate",
                 "superType": "constant",
                 "description": "Due date"
+            },
+            {
+                "id": "dueDateOverdue",
+                "superType": "invalud",
+                "description": "Passed due date"
             },
             {
                 "id": "title",
@@ -248,6 +253,10 @@
                     "dueDate": [
                         "constant.other.xit", 
                         "markup.other.task.date.xit"
+                    ],
+                    "dueDateOverdue": [
+                        "invalid.deprecated", 
+                        "markup.other.task.date.overdue.xit"
                     ],
                     "priority": [
                         "invalid.deprecated",

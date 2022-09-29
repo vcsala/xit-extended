@@ -1,10 +1,16 @@
 # Change Log
 
-All notable changes to the "xit-extended" extension will be documented in this file.
+[//]: # (All notable changes to the "xit-extended" extension will be documented in this file.)
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+[//]: # (Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.)
 
-## [Unreleased]
+## [0.2.3] - 2022-09-29
+
+Beta release. Further improved semantic highlighting.
+
+### Added
+
+- Overdue dates are highlighted differently (using the `dueDateOverdue` token)
 
 ## [0.2.0] - 2022-09-27
 

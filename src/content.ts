@@ -66,19 +66,78 @@ function pad(n: number, size: number): string {
 	return ns;
 }
 
-export function getDate(line: string): readonly [string, number] {
+export function getDate(line: string): {text: string, index: number} {
 	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
 	const match = re.exec(line);
 
 	if (match) {
-		return [match[2].trim().replace("/", "-"), match.index + 4] as const;
+		return {text: match[2].trim().replace("/", "-"), index: match.index + 4} // ] as const;
 	}
 
-	return ["", -1] as const;
+	return {text: "", index: -1};
 }
 
 function formatDate(date: Date): string {
 	return pad(date.getFullYear(), 4) + "-" + pad(date.getMonth() + 1, 2) + "-" + pad(date.getDate(), 2);
+}
+
+export function getToday(): string {
+	let today = new Date();
+	return formatDate(today);
+}
+
+export function getDueDate(date: string): string {
+	if (date != "") {
+		const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
+
+		if (match_full) {
+			return date;
+		}
+
+		const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
+
+		if (match_month) {
+			const year: number = parseInt(date.substring(0, 4));
+			const month: number = parseInt(date.substring(5));
+			const due_date = new Date(year, month, 0);
+			return formatDate(due_date);
+		}
+
+		const match_quarter = /[0-9]{4}-Q[0-9]{2}/.exec(date);
+
+		if (match_quarter) {
+			const year: number = parseInt(date.substring(0, 4));
+			const month: number = parseInt(date.substring(6)) * 3;
+			const due_date = new Date(year, month, 0);
+			return formatDate(due_date);
+		}
+
+		const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
+
+		if (match_week) {
+			const year: number = parseInt(date.substring(0, 4));
+			const week: number = parseInt(date.substring(6));
+
+			let year_start = new Date(year, 0, 1);
+			const year_start_day = year_start.getDay();
+
+			if (year_start_day > 0 && year_start_day <= 4) {
+				year_start.setDate(year_start.getDate() - year_start_day + 1);
+			} else if (year_start_day == 0) {
+				year_start.setDate(year_start.getDate() + 1);
+			} else {
+				year_start.setDate(year_start.getDate() + 8 - year_start_day);
+			}
+
+			let due_date = new Date(year_start);
+
+			due_date.setDate(due_date.getDate() + week * 7 - 1);
+
+			return formatDate(due_date);
+		}
+	}
+
+	return "";
 }
 
 export function getPriorityString(text: string): string {
@@ -209,8 +268,8 @@ class XitTask {
 	get_date(): string {
 		const date_match = getDate(this.get_text());
 
-		if (date_match[1] > 0) {
-			return date_match[0];
+		if (date_match.index > 0) {
+			return date_match.text;
 		}
 
 		return "";
@@ -218,58 +277,7 @@ class XitTask {
 
 	get_due_date(): string {
 		const date = this.get_date();
-
-		if (date != "") {
-			const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
-
-			if (match_full) {
-				return date;
-			}
-
-			const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
-
-			if (match_month) {
-				const year: number = parseInt(date.substring(0, 4));
-				const month: number = parseInt(date.substring(5));
-				const due_date = new Date(year, month, 0);
-				return formatDate(due_date);
-			}
-
-			const match_quarter = /[0-9]{4}-Q[0-9]{2}/.exec(date);
-
-			if (match_quarter) {
-				const year: number = parseInt(date.substring(0, 4));
-				const month: number = parseInt(date.substring(6)) * 3;
-				const due_date = new Date(year, month, 0);
-				return formatDate(due_date);
-			}
-
-			const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
-
-			if (match_week) {
-				const year: number = parseInt(date.substring(0, 4));
-				const week: number = parseInt(date.substring(6));
-
-				let year_start = new Date(year, 0, 1);
-				const year_start_day = year_start.getDay();
-
-				if (year_start_day > 0 && year_start_day <= 4) {
-					year_start.setDate(year_start.getDate() - year_start_day + 1);
-				} else if (year_start_day == 0) {
-					year_start.setDate(year_start.getDate() + 1);
-				} else {
-					year_start.setDate(year_start.getDate() + 8 - year_start_day);
-				}
-
-				let due_date = new Date(year_start);
-
-				due_date.setDate(due_date.getDate() + week * 7 - 1);
-
-				return formatDate(due_date);
-			}
-		}
-
-		return "";
+		return getDueDate(date);
 	}
 
 	get_tags(): string[] {

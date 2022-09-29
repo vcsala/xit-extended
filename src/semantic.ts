@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ParsingState, getDate, getPriorityString, compileStatus, ItemStatus } from './content';
+import { ParsingState, getDate, getPriorityString, compileStatus, ItemStatus, getDueDate, getToday } from './content';
 
 const tokenTypesLegend = [
     'title', 
@@ -10,6 +10,7 @@ const tokenTypesLegend = [
     'checkboxObsolete', 
     'priority', 
     'dueDate', 
+    'dueDateOverdue', 
     'tag',
     'wrongToken'
 ];
@@ -104,23 +105,25 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
         let tokens: IParsedToken[] = [];
         let have_date = false;
         let item_state: ItemStatus = ItemStatus.Unknown;
+        const today = getToday();
 
         for (let i = 0; i < document.lineCount; i++) {
-            let line = document.lineAt(i);
-            if (line.text.startsWith("\[")) {
-                const close_index = line.text.indexOf("]");
+            const line = document.lineAt(i);
+            const text = line.text;
+            if (text.startsWith("\[")) {
+                const close_index = text.indexOf("]");
                 let next_char = " ";
-                let status_char = line.text.substring(1, close_index);
+                let status_char = text.substring(1, close_index);
 
-                if (line.text.length > close_index + 1) {
-                    next_char = line.text.charAt(close_index + 1);
+                if (text.length > close_index + 1) {
+                    next_char = text.charAt(close_index + 1);
                 }
 
                 if (close_index < 0 || next_char != " " || status_char.length != 1 || " @x~".indexOf(status_char) < 0) {
                     tokens.push({
                         line: i,
                         startCharacter: 0,
-                        length: line.text.length,
+                        length: text.length,
                         tokenType: 'wrongToken',
                         tokenModifier: 'none',
                     });
@@ -141,21 +144,24 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                         tokens.push({
                             line: i,
                             startCharacter: 4,
-                            length: line.text.length - 4,
+                            length: text.length - 4,
                             tokenType: 'itemClosed',
                             tokenModifier: 'none',
                         });
                     } else {
-                        const date_match = getDate(line.text);
+                        const date_match = getDate(text);
 
-                        if (date_match[1] > 0) {
-                            const date = date_match[0];
+                        if (date_match.index > 0) {
+                            const date = date_match.text;
+                            let due_date = getDueDate(date);
+                            due_date = (due_date == "") ? "9999-99-99" : due_date;
+                            let token = (due_date < today) ? 'dueDateOverdue' : 'dueDate';
 
                             tokens.push({
                                 line: i,
-                                startCharacter: date_match[1] - 3,
-                                length: date_match[0].length + 3,
-                                tokenType: 'dueDate',
+                                startCharacter: date_match.index - 3,
+                                length: date.length + 3,
+                                tokenType: token,
                                 tokenModifier: 'none',
                             });
 
@@ -164,7 +170,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                             have_date = false;
                         }
 
-                        const priority = getPriorityString(line.text);
+                        const priority = getPriorityString(text);
 
                         if (priority != "") {
                             tokens.push({
@@ -176,7 +182,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                             });
                         }
 
-                        const tag_tokens = this._getTags(line.text, i);
+                        const tag_tokens = this._getTags(text, i);
 
                         if (tag_tokens.length > 0) {
                             tokens = tokens.concat(tag_tokens);
@@ -185,12 +191,12 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
 
                     parsing_state = ParsingState.TaskHead;
                 }
-            } else if (line.text.startsWith("    ") && line.text.trim() != "") {
+            } else if (text.startsWith("    ") && text.trim() != "") {
                 if (parsing_state != ParsingState.TaskHead && parsing_state != ParsingState.TaskBody) {
                     tokens.push({
                         line: i,
                         startCharacter: 0,
-                        length: line.text.length,
+                        length: text.length,
                         tokenType: 'wrongToken',
                         tokenModifier: 'none',
                     });
@@ -201,22 +207,25 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                         tokens.push({
                             line: i,
                             startCharacter: 4,
-                            length: line.text.length - 4,
+                            length: text.length - 4,
                             tokenType: 'itemClosed',
                             tokenModifier: 'none',
                         });
                     } else {
                         if (!have_date) {
-                            const date_match = getDate(line.text);
+                            const date_match = getDate(text);
 
-                            if (date_match[1] > 0) {
-                                const date = date_match[0];
-
+                            if (date_match.index > 0) {
+                                const date = date_match.text;
+                                let due_date = getDueDate(date);
+                                due_date = (due_date == "") ? "9999-99-99" : due_date;
+                                let token = (due_date < today) ? 'dueDateOverdue' : 'dueDate';
+    
                                 tokens.push({
                                     line: i,
-                                    startCharacter: date_match[1] - 3,
-                                    length: date_match[0].length + 3,
-                                    tokenType: 'dueDate',
+                                    startCharacter: date_match.index - 3,
+                                    length: date.length + 3,
+                                    tokenType: token,
                                     tokenModifier: 'none',
                                 });
 
@@ -224,7 +233,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                             }
                         }
 
-                        const tag_tokens = this._getTags(line.text, i);
+                        const tag_tokens = this._getTags(text, i);
 
                         if (tag_tokens.length > 0) {
                             tokens = tokens.concat(tag_tokens);
@@ -233,15 +242,15 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
 
                     parsing_state = ParsingState.TaskBody;
                 }
-            } else if (line.text.trim() == "") {
+            } else if (text.trim() == "") {
                 parsing_state = ParsingState.BlankLine;
                 have_date = false;
             } else {
-                if ((parsing_state != ParsingState.Start && parsing_state != ParsingState.BlankLine) || (line.text.charAt(0).trim() == "")) {
+                if ((parsing_state != ParsingState.Start && parsing_state != ParsingState.BlankLine) || (text.charAt(0).trim() == "")) {
                     tokens.push({
                         line: i,
                         startCharacter: 0,
-                        length: line.text.length,
+                        length: text.length,
                         tokenType: 'wrongToken',
                         tokenModifier: 'none',
                     });
@@ -251,7 +260,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                     tokens.push({
                         line: i,
                         startCharacter: 0,
-                        length: line.text.length,
+                        length: text.length,
                         tokenType: 'title',
                         tokenModifier: '',
                     });

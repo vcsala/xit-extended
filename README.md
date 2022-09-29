@@ -32,6 +32,7 @@ If the colors and looks of the syntax highlighting is not correct or as fancy as
             // - markup.other.task.description.closed.xit
             // - markup.other.task.priority.xit
             // - markup.other.task.date.xit
+            // - markup.other.task.date.overdue.xit
             // - markup.other.task.tag.xit
             "scope": "markup.other.task.checkbox.open.xit",
             "settings": {
@@ -115,6 +116,7 @@ A semantic tokenization is implemented, which helps to be more compliant with  t
 - `checkboxCompleted` - Checked (completed) checkbox (`[x] `)
 - `checkboxObsolete` - Obsolete checkbox (`[~] `)
 - `priority` - priority part of the description (only on open or ongoing items)
-- `dueDate` - due date part of the description (only on open or ongoing items)
+- `dueDate` - due date part of the description (only on open or ongoing items), where the due date is still in the future
+- `dueDateOverdue` - due date part of the description (only on open or ongoing items), where the due date has been already passed
 - `tag` - tags in description (only on open or ongoing items)
 - `wrongToken` - lines which cannot be parsed (they do not follow the specification)
