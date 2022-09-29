@@ -9,7 +9,7 @@ Beta release. Further improved semantic highlighting.
 
 ### Added
 
-- Overdue dates are highlighted differently (using the `dueDateOverdue` token)
+- Overdue dates are highlighted differently (using the `dueDateOverdue` semantic token)
 
 ## [0.2.0] - 2022-09-27
 
