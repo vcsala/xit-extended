@@ -5,15 +5,48 @@ import { XitFoldingRangeProvider } from './folding';
 import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
 import { registerSemanticProvider } from './semantic'
+import { join, dirname } from 'path';
+import { syncWriteFile } from './utils';
 
 let disposables: vscode.Disposable[] = [];
 
+function getSettings(): {to_be_saved: boolean, filename: string} {
+	const config = vscode.workspace.getConfiguration('xit-extended');
+
+	return {to_be_saved: config.saveDeleted, filename: config.saveFilename};
+}
+
 function clearItems(editor: vscode.TextEditor) {
 	let groups = readContent(editor.document);
+	const config = getSettings();
+	let filename = "";
+
+	if (config.to_be_saved) {
+		const current_filename = editor.document.fileName;
+		const current_path = dirname(current_filename);
+		filename = join(current_path, config.filename);
+	}
 
 	editor.edit(builder => {
-		groups.forEach((group) => group.delete_tasks());
+		const all_deleted = groups.map((group) => group.delete_tasks()).flat();
 		replaceAll(editor.document, builder, groups);
+
+		if (config.to_be_saved) {
+			try {
+				let output = "";
+				for (const task of all_deleted) {
+					for (const line of task.lines) {
+						output += line + "\n";
+					}
+				}
+	
+				syncWriteFile(filename, output);
+			}
+			catch {
+				vscode.window.showErrorMessage("There is an issue with saving the deleted items to '" + filename + "' file.");
+			}
+	
+		}
 	});
 }
 

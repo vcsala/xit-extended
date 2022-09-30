@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { eliminateDuplicates, range, formatDate } from './utils'
 
 export const DEBUG = false;
 
@@ -60,12 +61,6 @@ export function compileStatus(char: string): ItemStatus {
 	return ItemStatus.Unknown;
 }
 
-function pad(n: number, size: number): string {
-	let ns = n.toString();
-	while (ns.length < size) ns = "0" + ns;
-	return ns;
-}
-
 export function getDate(line: string): {text: string, index: number} {
 	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
 	const match = re.exec(line);
@@ -75,15 +70,6 @@ export function getDate(line: string): {text: string, index: number} {
 	}
 
 	return {text: "", index: -1};
-}
-
-function formatDate(date: Date): string {
-	return pad(date.getFullYear(), 4) + "-" + pad(date.getMonth() + 1, 2) + "-" + pad(date.getDate(), 2);
-}
-
-export function getToday(): string {
-	let today = new Date();
-	return formatDate(today);
 }
 
 export function getDueDate(date: string): string {
@@ -398,8 +384,10 @@ class XitGroup {
 		this.tasks.sort(compareTasks);
 	}
 
-	delete_tasks() {
+	delete_tasks(): XitTask[] {
+		const deleted_tasks = this.tasks.filter((element) => (element.get_status() == ItemStatus.Completed || element.get_status() == ItemStatus.Obsolete));
 		this.tasks = this.tasks.filter((element) => (element.get_status() != ItemStatus.Completed && element.get_status() != ItemStatus.Obsolete));
+		return deleted_tasks;
 	}
 
 	get_all_tags(): string[] {
@@ -518,14 +506,6 @@ export function getAllTags(groups: XitGroup[]): string[] {
 	let all_tags = groups.map(group => group.get_all_tags()).flat();
 	all_tags = eliminateDuplicates(all_tags);
 	return all_tags;
-}
-
-function range(min: number, max: number) {
-	return Array.from({ length: max - min + 1 }, (_, i) => min + i);
-}
-
-function eliminateDuplicates<T extends unknown[]>(array: T): T {
-	return Array.from(new Set(array)) as T;
 }
 
 function getSelectedLines(editor: vscode.TextEditor) {

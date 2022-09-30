@@ -3,6 +3,15 @@
 [//]: <> (All notable changes to the "xit-extended" extension will be documented in this file.)
 [//]: <> (Check [Keep a Changelog]\(http://keepachangelog.com/\) for recommendations on how to structure this file.)
 
+## [0.2.7] - 2022-09-29
+
+Beta release. Configuration is added.
+
+### Added
+
+- Possibility to save the deleted items into a separate file
+- User can configure if they want to save the items and what is the name of the file
+
 ## [0.2.3] - 2022-09-29
 
 Beta release. Further improved semantic highlighting.

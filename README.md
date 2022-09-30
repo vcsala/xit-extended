@@ -9,6 +9,7 @@ This extension provides support for handling tasks in [xit!](https://xit.jotaen.
 - [Snippets](#snippets)
 - [Completion](#completion)
 - [Semantic Highlight](#semantic-highlight)
+- [Configuration](#configuration)
 
 ## Syntax Highlighting
 
@@ -18,7 +19,7 @@ This extension provides support for handling tasks in [xit!](https://xit.jotaen.
 
 If the colors and looks of the syntax highlighting is not correct or as fancy as you want to, you can try to edit the `tokenColorCustomizations` in the user settings.
 
-```json
+```javascript
 {
     "editor.tokenColorCustomizations": {
         "textMateRules": [{
@@ -120,3 +121,9 @@ A semantic tokenization is implemented, which helps to be more compliant with  t
 - `dueDateOverdue` - due date part of the description (only on open or ongoing items), where the due date has been already passed
 - `tag` - tags in description (only on open or ongoing items)
 - `wrongToken` - lines which cannot be parsed (they do not follow the specification)
+
+## Configuration
+
+This extension provides configurations through VSCode's configuration settings. All configurations are under `xit-extended.*.`. At this moment, the configuration allows the user to decide if the items removed (by the XIT: Remove Completed and Obsolete command) are saved to a separate file. If yes, the user can also configure the name of the file (it is created in the same directory where the original *.xit file is opened from).
+
+By default, the save flag is set to false. The default filename is `deleted.xit`.

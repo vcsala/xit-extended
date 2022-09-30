@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.2.3",
+    "version": "0.2.7",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -57,6 +57,21 @@
                 "configuration": "./language-configuration.json"
             }
         ],
+        "configuration": {
+            "title": "xit! extended",
+            "properties": {
+                "xit-extended.saveDeleted": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "When removed, save deleted and obsolete items to a file"
+                },
+                "xit-extended.saveFilename": {
+                    "type": "string",
+                    "default": "deleted.xit",
+                    "description": "The filename to save the removed items (in the same directory as the edited file is)"
+                }
+            }
+        },
         "menus": {
             "editor/context": [
                 {
@@ -228,7 +243,7 @@
             {
                 "scopes": {
                     "title": [
-                        "markup.underline.xit", 
+                        "markup.underline.xit",
                         "markup.other.task.title.xit"
                     ],
                     "checkboxOpen": [
@@ -236,35 +251,35 @@
                         "markup.other.task.checkbox.open.xit"
                     ],
                     "checkboxOngoing": [
-                        "keyword.control.xit", 
+                        "keyword.control.xit",
                         "markup.other.task.checkbox.ongoing.xit"
                     ],
                     "checkboxCompleted": [
-                        "comment.xit", 
+                        "comment.xit",
                         "markup.other.task.checkbox.checked.xit"
                     ],
                     "checkboxObsolete": [
                         "source.xit"
                     ],
                     "itemClosed": [
-                        "comment.xit", 
+                        "comment.xit",
                         "markup.strikethrough.xit"
                     ],
                     "dueDate": [
-                        "constant.other.xit", 
+                        "constant.other.xit",
                         "markup.other.task.date.xit"
                     ],
                     "dueDateOverdue": [
-                        "invalid.deprecated", 
+                        "invalid.deprecated",
                         "markup.other.task.date.overdue.xit"
                     ],
                     "priority": [
                         "invalid.deprecated",
-                        "markup.deleted.xit", 
+                        "markup.deleted.xit",
                         "markup.other.task.priority.xit"
                     ],
                     "tag": [
-                        "comment.block.documentation.xit", 
+                        "comment.block.documentation.xit",
                         "markup.other.task.tag.xit"
                     ],
                     "wrongToken": [

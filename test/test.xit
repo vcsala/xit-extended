@@ -1,8 +1,22 @@
-[ ]
+Status
 [ ] Open
-[x] Checked
 [@] Ongoing
+[x] Completed
 [~] Obsolete
+
+Features
+[ ] Items can be #tagged
+[ ] They can also use #tag=value
+[ ] ! Can have priorities
+[ ] !! They can represent priority levels too
+[ ] A task can have a due date -> 2022-09-30
+[ ] Due date can be overdue -> 2022-09-25
+[ ] Due date can be in weeks -> 2022-W41
+[ ] or months -> 2022-09
+[ ] or quarters -> 2022-Q1
+[ ] or even years -> 2022
+[ ] Task can be written
+    in several lines
 
 [*] Invalid
 [o] Invalid
