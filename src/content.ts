@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { eliminateDuplicates, range, formatDate } from './utils'
+import { eliminateDuplicates, range, formatDate, getYearStart } from './utils'
 
 export const DEBUG = false;
 
@@ -61,15 +61,15 @@ export function compileStatus(char: string): ItemStatus {
 	return ItemStatus.Unknown;
 }
 
-export function getDate(line: string): {text: string, index: number} {
+export function getDate(line: string): { text: string, index: number } {
 	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
 	const match = re.exec(line);
 
 	if (match) {
-		return {text: match[2].trim().replace("/", "-"), index: match.index + 4} // ] as const;
+		return { text: match[2].trim().replace("/", "-"), index: match.index + 4 } // ] as const;
 	}
 
-	return {text: "", index: -1};
+	return { text: "", index: -1 };
 }
 
 export function getDueDate(date: string): string {
@@ -103,22 +103,17 @@ export function getDueDate(date: string): string {
 		if (match_week) {
 			const year: number = parseInt(date.substring(0, 4));
 			const week: number = parseInt(date.substring(6));
-
-			let year_start = new Date(year, 0, 1);
-			const year_start_day = year_start.getDay();
-
-			if (year_start_day > 0 && year_start_day <= 4) {
-				year_start.setDate(year_start.getDate() - year_start_day + 1);
-			} else if (year_start_day == 0) {
-				year_start.setDate(year_start.getDate() + 1);
-			} else {
-				year_start.setDate(year_start.getDate() + 8 - year_start_day);
-			}
-
-			let due_date = new Date(year_start);
-
+			let due_date = getYearStart(year);
 			due_date.setDate(due_date.getDate() + week * 7 - 1);
+			return formatDate(due_date);
+		}
 
+		const match_year = /[0-9]{4}/.exec(date);
+
+		if (match_year) {
+			const year: number = parseInt(date);
+			const month: number = 12;
+			const due_date = new Date(year, month, 0);
 			return formatDate(due_date);
 		}
 	}

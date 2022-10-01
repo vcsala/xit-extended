@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs';
 
 export function syncWriteFile(filename: string, data: any) {
-	writeFileSync(filename, data, {flag: 'a'});
+	writeFileSync(filename, data, { flag: 'a' });
 }
 
 export function eliminateDuplicates<T extends unknown[]>(array: T): T {
@@ -25,4 +25,34 @@ export function formatDate(date: Date): string {
 export function getToday(): string {
 	let today = new Date();
 	return formatDate(today);
+}
+
+export function getYearStart(year: number): Date {
+	let year_start = new Date(year, 0, 1);
+	const year_start_day = year_start.getDay();
+
+	if (year_start_day > 0 && year_start_day <= 4) {
+		year_start.setDate(year_start.getDate() - year_start_day + 1);
+	} else if (year_start_day == 0) {
+		year_start.setDate(year_start.getDate() + 1);
+	} else {
+		year_start.setDate(year_start.getDate() + 8 - year_start_day);
+	}
+
+	return new Date(year_start);
+}
+
+export function getCurrentPeriod(period: string): string {
+	// TODO: implement
+	if (period == "week") {
+
+	} else if (period == "month") {
+
+	} else if (period == "quarter") {
+
+	} else if (period == "year") {
+
+	}
+
+	return getToday();
 }

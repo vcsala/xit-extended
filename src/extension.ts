@@ -10,10 +10,10 @@ import { syncWriteFile } from './utils';
 
 let disposables: vscode.Disposable[] = [];
 
-function getSettings(): {to_be_saved: boolean, filename: string} {
+function getSettings(): { to_be_saved: boolean, filename: string } {
 	const config = vscode.workspace.getConfiguration('xit-extended');
 
-	return {to_be_saved: config.saveDeleted, filename: config.saveFilename};
+	return { to_be_saved: config.saveDeleted, filename: config.saveFilename };
 }
 
 function clearItems(editor: vscode.TextEditor) {
@@ -28,24 +28,17 @@ function clearItems(editor: vscode.TextEditor) {
 	}
 
 	editor.edit(builder => {
-		const all_deleted = groups.map((group) => group.delete_tasks()).flat();
+		const all_deleted = groups.flatMap((group) => group.delete_tasks());
 		replaceAll(editor.document, builder, groups);
 
 		if (config.to_be_saved) {
 			try {
-				let output = "";
-				for (const task of all_deleted) {
-					for (const line of task.lines) {
-						output += line + "\n";
-					}
-				}
-	
-				syncWriteFile(filename, output);
+				let output = all_deleted.flatMap(task => task.lines).join("\n");
+				syncWriteFile(filename, output + "\n");
 			}
 			catch {
 				vscode.window.showErrorMessage("There is an issue with saving the deleted items to '" + filename + "' file.");
 			}
-	
 		}
 	});
 }
@@ -81,7 +74,7 @@ function toggleSelectedCheckboxes(editor: vscode.TextEditor) {
 	})
 }
 
-function increasePriorityOfSekected(editor: vscode.TextEditor) {
+function increasePriorityOfSelected(editor: vscode.TextEditor) {
 	let selected_tasks = readSelectedTasks(editor);
 
 	editor.edit(builder => {
@@ -101,6 +94,22 @@ function decreasePriorityOfSelected(editor: vscode.TextEditor) {
 			task.update_task(editor.document, builder);
 		});
 	})
+}
+
+function insertCurrentWeek(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+	// TODO: implement
+}
+
+function insertCurrentMonth(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+	// TODO: implement
+}
+
+function insertCurrentQuarter(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+	// TODO: implement
+}
+
+function insertCurrentYear(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+	// TODO: implement
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -133,7 +142,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('xit.increasePriority', () => {
 			const editor = vscode.window.activeTextEditor!;
-			increasePriorityOfSekected(editor);
+			increasePriorityOfSelected(editor);
 		})
 	);
 
