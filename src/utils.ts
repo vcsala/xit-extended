@@ -50,10 +50,8 @@ export function getYearLastWeek(year: number): number {
 	const year_end_day = year_end.getDay();
 
 	if (year_end_day >= 0 && year_end_day < 4) {
-		console.log("1");
 		year_end.setDate(year_end.getDate() - year_end_day);
 	} else {
-		console.log("2");
 		year_end.setDate(year_end.getDate() + 7 - year_end_day);
 	}
 
