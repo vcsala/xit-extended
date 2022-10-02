@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { eliminateDuplicates, range, formatDate, getYearStart } from './utils'
+import { eliminateDuplicates, range, formatDate, getYearWeekStart } from './utils'
 
 export const DEBUG = false;
 
@@ -103,7 +103,7 @@ export function getDueDate(date: string): string {
 		if (match_week) {
 			const year: number = parseInt(date.substring(0, 4));
 			const week: number = parseInt(date.substring(6));
-			let due_date = getYearStart(year);
+			let due_date = getYearWeekStart(year);
 			due_date.setDate(due_date.getDate() + week * 7 - 1);
 			return formatDate(due_date);
 		}

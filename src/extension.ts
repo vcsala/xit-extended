@@ -6,7 +6,7 @@ import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
 import { registerSemanticProvider } from './semantic'
 import { join, dirname } from 'path';
-import { syncWriteFile } from './utils';
+import { getCurrentPeriod, syncWriteFile } from './utils';
 
 let disposables: vscode.Disposable[] = [];
 
@@ -96,20 +96,27 @@ function decreasePriorityOfSelected(editor: vscode.TextEditor) {
 	})
 }
 
+function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, period: string) {
+	editor.selections.forEach((selection, i) => {
+		let text = "FooBar " + i;
+		edit.insert(selection.active, getCurrentPeriod(period));
+	})
+}
+
 function insertCurrentWeek(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	// TODO: implement
+	insertCurrentPeriod(editor, edit, "week");
 }
 
 function insertCurrentMonth(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	// TODO: implement
+	insertCurrentPeriod(editor, edit, "month");
 }
 
 function insertCurrentQuarter(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	// TODO: implement
+	insertCurrentPeriod(editor, edit, "quarter");
 }
 
 function insertCurrentYear(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	// TODO: implement
+	insertCurrentPeriod(editor, edit, "year");
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -177,6 +184,11 @@ export function activate(context: vscode.ExtensionContext) {
 			sortTasks(editor);
 		})
 	);
+
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentWeek', insertCurrentWeek));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentMonth', insertCurrentMonth));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentQuarter', insertCurrentQuarter));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentYear', insertCurrentYear));
 
 	registerSemanticProvider();
 }
