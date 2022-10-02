@@ -66,7 +66,9 @@ export function getCurrentPeriod(period: string): string {
 	const today = new Date();
 	const year = "-> " + today.getFullYear().toString();
 
-	if (period == "week") {
+	if (period == "day") {
+		return year + "-" + pad(today.getMonth() + 1, 2) + "-" + pad(today.getDate(), 2);
+	} else if (period == "week") {
 		const days_between = (today.getTime() - getYearWeekStart(today.getFullYear()).getTime()) / MS_IN_DAYS;
 		const week = Math.trunc(days_between / 7) + 1
 		return year + "-W" + pad(week + 1, 2);

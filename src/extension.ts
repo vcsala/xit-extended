@@ -103,6 +103,10 @@ function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorE
 	})
 }
 
+function insertCurrentDay(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+	insertCurrentPeriod(editor, edit, "day");
+}
+
 function insertCurrentWeek(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 	insertCurrentPeriod(editor, edit, "week");
 }
@@ -185,6 +189,7 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentDay', insertCurrentDay));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentWeek', insertCurrentWeek));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentMonth', insertCurrentMonth));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentQuarter', insertCurrentQuarter));
