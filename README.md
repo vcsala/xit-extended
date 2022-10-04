@@ -79,6 +79,13 @@ There are several commands available to help users managing their tasks:
 - XIT: Sort by Due Date and Priority - sort tasks in each group by their due date (ascending) and priority (descending).
 - XIT: Increase priority - increase the priority of the selected tasks.
 - XIT: Decrease priority - decrease the priority of the selected tasks (if possible).
+- XIT: Insert Current Day - insert current day (in -> YYYY-MM-DD format) at the cursor position
+- XIT: Insert Current Week - insert current week (in -> YYYY-Wxx format) at the cursor position
+- XIT: Insert Current Month - insert current month (in -> YYYY-MM format) at the cursor position
+- XIT: Insert Current Quarter - insert current quarter (in -> YYYY-Qx format) at the cursor position
+- XIT: Insert Current Year - insert current day (in -> YYYY format) at the cursor position
+- XIT: Increase Date - increase the date with one period (e.g., if the due date is a month, for example 2022-10, it increase the date with one month)
+- XIT: Decrease Date - decrease the date with one period (e.g., if the due date is a month, for example 2022-10, it decrease the date with one month)
 
 ## Context menu
 
@@ -93,6 +100,13 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 - `ctrl+alt+d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
 - `ctrl+up` - Increase priority of all selected tasks.
 - `ctrl+down` - Decrease priority of all selected tasks (if possible).
+- `ctrl-d` - Insert current day at the cursor position
+- `ctrl-w` - Insert current week at the cursor position
+- `ctrl-m` - Insert current month at the cursor position
+- `ctrl-q` - Insert current quarter at the cursor position
+- `ctrl-y` - Insert current year at the cursor position
+- `ctrl-pageup` - Increase date
+- `crel-pagedown` - Decrease date
 
 ## Snippets
 

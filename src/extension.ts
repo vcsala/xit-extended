@@ -6,7 +6,7 @@ import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
 import { registerSemanticProvider } from './semantic'
 import { join, dirname } from 'path';
-import { getCurrentPeriod, syncWriteFile } from './utils';
+import { getCurrentPeriod, syncWriteFile, Period } from './utils';
 
 let disposables: vscode.Disposable[] = [];
 
@@ -96,31 +96,33 @@ function decreasePriorityOfSelected(editor: vscode.TextEditor) {
 	})
 }
 
-function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, period: string) {
+function increaseDateOfSelected(editor: vscode.TextEditor) {
+	let selected_tasks = readSelectedTasks(editor);
+
+	editor.edit(builder => {
+		selected_tasks.forEach((task) => {
+			task.increase_date();
+			task.update_task(editor.document, builder);
+		});
+	})
+}
+
+function decreaseDateOfSelected(editor: vscode.TextEditor) {
+	let selected_tasks = readSelectedTasks(editor);
+
+	editor.edit(builder => {
+		selected_tasks.forEach((task) => {
+			task.decrease_date();
+			task.update_task(editor.document, builder);
+		});
+	})
+}
+
+function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, period: Period) {
 	editor.selections.forEach((selection, i) => {
 		let text = "FooBar " + i;
 		edit.insert(selection.active, getCurrentPeriod(period));
 	})
-}
-
-function insertCurrentDay(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	insertCurrentPeriod(editor, edit, "day");
-}
-
-function insertCurrentWeek(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	insertCurrentPeriod(editor, edit, "week");
-}
-
-function insertCurrentMonth(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	insertCurrentPeriod(editor, edit, "month");
-}
-
-function insertCurrentQuarter(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	insertCurrentPeriod(editor, edit, "quarter");
-}
-
-function insertCurrentYear(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-	insertCurrentPeriod(editor, edit, "year");
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -165,6 +167,20 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
+		vscode.commands.registerCommand('xit.increaseDate', () => {
+			const editor = vscode.window.activeTextEditor!;
+			increaseDateOfSelected(editor);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('xit.decreaseDate', () => {
+			const editor = vscode.window.activeTextEditor!;
+			decreaseDateOfSelected(editor);
+		})
+	);
+
+	context.subscriptions.push(
 		vscode.commands.registerCommand('xit.suggest', () => {
 			const editor = vscode.window.activeTextEditor!;
 
@@ -189,11 +205,11 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentDay', insertCurrentDay));
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentWeek', insertCurrentWeek));
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentMonth', insertCurrentMonth));
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentQuarter', insertCurrentQuarter));
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentYear', insertCurrentYear));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentDay', (editor, edit) => insertCurrentPeriod(editor, edit, Period.Day)));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentWeek', (editor, edit) => insertCurrentPeriod(editor, edit, Period.Week)));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentMonth', (editor, edit) => insertCurrentPeriod(editor, edit, Period.Month)));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentQuarter', (editor, edit) => insertCurrentPeriod(editor, edit, Period.Quarter)));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentYear', (editor, edit) => insertCurrentPeriod(editor, edit, Period.Year)));
 
 	registerSemanticProvider();
 }

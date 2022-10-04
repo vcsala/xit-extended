@@ -1,7 +1,27 @@
 import { match } from 'assert';
 import { writeFileSync } from 'fs';
+import { TestTag } from 'vscode';
 
 const MS_IN_DAYS = 24 * 60 * 60 * 1000;
+
+export enum Period {
+	Day,
+	Week,
+	Month,
+	Quarter,
+	Year
+}
+
+export function daysInMonth(year: number, month: number): number {
+	switch (month) {
+		case 2:
+			return (year % 4 == 0 && year % 100) || year % 400 == 0 ? 29 : 28;
+		case 9: case 4: case 6: case 11:
+			return 30;
+		default:
+			return 31
+	}
+}
 
 export function syncWriteFile(filename: string, data: any) {
 	writeFileSync(filename, data, { flag: 'a' });
@@ -45,7 +65,7 @@ export function getYearWeekStart(year: number): Date {
 	return new Date(year_start);
 }
 
-export function getYearLastWeek(year: number): number {
+export function getNumberOfWeeks(year: number): number {
 	let year_end = new Date(year, 12, 0);
 	const year_end_day = year_end.getDay();
 
@@ -62,24 +82,127 @@ export function getYearLastWeek(year: number): number {
 	return Math.trunc(days_between / 7) + 1;
 }
 
-export function getCurrentPeriod(period: string): string {
+export function getCurrentPeriod(period: Period): string {
 	const today = new Date();
 	const year = "-> " + today.getFullYear().toString();
 
-	if (period == "day") {
-		return year + "-" + pad(today.getMonth() + 1, 2) + "-" + pad(today.getDate(), 2);
-	} else if (period == "week") {
-		const days_between = (today.getTime() - getYearWeekStart(today.getFullYear()).getTime()) / MS_IN_DAYS;
-		const week = Math.trunc(days_between / 7) + 1
-		return year + "-W" + pad(week + 1, 2);
-	} else if (period == "month") {
-		return year + "-" + pad(today.getMonth() + 1, 2);
-	} else if (period == "quarter") {
-		const quarter = (Math.trunc(today.getMonth() / 3) + 1).toString();
-		return year + "-Q" + quarter;
-	} else if (period == "year") {
-		return year;
+	switch (period) {
+		case Period.Week:
+			const days_between = (today.getTime() - getYearWeekStart(today.getFullYear()).getTime()) / MS_IN_DAYS;
+			const week = Math.trunc(days_between / 7) + 1
+			return year + "-W" + pad(week + 1, 2);
+
+		case Period.Month:
+			return year + "-" + pad(today.getMonth() + 1, 2);
+
+		case Period.Quarter:
+			const quarter = (Math.trunc(today.getMonth() / 3) + 1).toString();
+			return year + "-Q" + quarter;
+	
+		case Period.Year:
+			return year;
 	}
 
-	return getToday();
+	return "-> " + getToday();
+}
+
+export function replacePart(text: string, new_part: string, start: number): string {
+	const length = text.length;
+	const part_length = new_part.length;
+
+	return text.substring(0, start) + new_part + text.substring(start + part_length, length);
+}
+
+export function changeDate(date: string, delta: number): string {
+	if (date != "") {
+		const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
+
+		if (match_full) {
+			let year: number = parseInt(date.substring(0, 4));
+			let month: number = parseInt(date.substring(5, 7));
+			let day: number = parseInt(date.substring(8)) + delta;
+
+			if (day > daysInMonth(year, month)) {
+				month++;
+
+				if (month > 12) {
+					year++;
+					month = 1;
+				}
+
+				day = 1;
+			} else if (day < 1) {
+				month--;
+
+				if (month < 1) {
+					year--;
+					month = 12;
+				}
+
+				day = daysInMonth(year, month);
+			}
+
+			return pad(year, 4) + "-" + pad(month, 2) + "-" + pad(day, 2);
+		}
+
+		const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
+
+		if (match_month) {
+			let year: number = parseInt(date.substring(0, 4));
+			let month: number = parseInt(date.substring(5)) + delta;
+
+			if (month > 12) {
+				year++;
+				month = 1;
+			} else if (month < 1) {
+				year--;
+				month = 12;
+			}
+
+			return pad(year, 4) + "-" + pad(month, 2);
+		}
+
+		const match_quarter = /[0-9]{4}-Q[0-9]/.exec(date);
+
+		if (match_quarter) {
+			let year: number = parseInt(date.substring(0, 4));
+			let quarter: number = parseInt(date.substring(6)) + delta;
+
+			if (quarter > 4) {
+				year++;
+				quarter = 1;
+			} else if (quarter < 1) {
+				year--;
+				quarter = 4;
+			}
+
+			return pad(year, 4) + "-Q" + quarter.toString();
+		}
+
+		const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
+
+		if (match_week) {
+			let year: number = parseInt(date.substring(0, 4));
+			let week: number = parseInt(date.substring(6)) + delta;
+
+			if (week > getNumberOfWeeks(year)) {
+				year++;
+				week = 1;
+			} else if (week < 1) {
+				year--;
+				week = getNumberOfWeeks(year);
+			}
+
+			return pad(year, 4) + "-W" + pad(week, 2);
+		}
+
+		const match_year = /[0-9]{4}/.exec(date);
+
+		if (match_year) {
+			let year: number = parseInt(date) + delta;
+			return pad(year, 4);
+		}
+	}
+
+	return "";
 }

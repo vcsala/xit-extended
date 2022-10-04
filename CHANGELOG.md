@@ -3,6 +3,15 @@
 [//]: <> (All notable changes to the "xit-extended" extension will be documented in this file.)
 [//]: <> (Check [Keep a Changelog]\(http://keepachangelog.com/\) for recommendations on how to structure this file.)
 
+## [0.3.0] - 2022-10-04
+
+Beta release. Easier date handling.
+
+### Added
+
+- Commands, shortcuts and context menu items to insert current period (day, week, month, quarter or year)
+- Commands, shortcuts and context menu items to increase or decrease the date
+
 ## [0.2.7] - 2022-09-29
 
 Beta release. Configuration is added.

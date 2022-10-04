@@ -1,16 +1,6 @@
 import * as vscode from 'vscode';
 import { ParsingState, getDate } from './content';
-
-function daysInMonth(year: number, month: number): number { // month is 0 indexed: 0-11
-	switch (month) {
-		case 2:
-			return (year % 4 == 0 && year % 100) || year % 400 == 0 ? 29 : 28;
-		case 9: case 4: case 6: case 11:
-			return 30;
-		default:
-			return 31
-	}
-}
+import { daysInMonth } from './utils';
 
 function isValid(year: number, month: number, day: number): boolean {
 	return month >= 1 && month <= 12 && day > 0 && day <= daysInMonth(year, month);
@@ -33,7 +23,7 @@ function checkDate(date: string): string {
 
 	if (match_month) {
 		const year: number = parseInt(date.substring(0, 4));
-		const month: number = parseInt(date.substring(5, 7));
+		const month: number = parseInt(date.substring(5));
 
 		if (month < 1 || month > 12) {
 			return "Invalid month";

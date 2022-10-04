@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { eliminateDuplicates, range, formatDate, getYearWeekStart } from './utils'
+import { eliminateDuplicates, range, formatDate, getYearWeekStart, replacePart, changeDate } from './utils'
 
 export const DEBUG = false;
 
@@ -89,7 +89,7 @@ export function getDueDate(date: string): string {
 			return formatDate(due_date);
 		}
 
-		const match_quarter = /[0-9]{4}-Q[0-9]{2}/.exec(date);
+		const match_quarter = /[0-9]{4}-Q[1-4]/.exec(date);
 
 		if (match_quarter) {
 			const year: number = parseInt(date.substring(0, 4));
@@ -254,6 +254,40 @@ class XitTask {
 		}
 
 		return "";
+	}
+
+	get_date_with_position(): {date: string, line: number, position: number} {
+		for (let i = 0; i < this.lines.length; i++) {
+			const date_match = getDate(this.get_text());
+
+			if (date_match.index > 0) {
+				return {date: date_match.text, line: i, position: date_match.index};
+			}
+		}
+
+		return {date: "", line: -1, position: -1};
+	}
+
+	set_date(new_date: string, line: number, position: number) {
+		this.lines[line] = replacePart(this.lines[line], new_date, position);
+	}
+
+	increase_date() {
+		const date_match = this.get_date_with_position();
+
+		if (date_match.position > -1) {
+			const new_date = changeDate(date_match.date, 1);
+			this.set_date(new_date, date_match.line, date_match.position);
+		}
+	}
+
+	decrease_date() {
+		const date_match = this.get_date_with_position();
+
+		if (date_match.position > -1) {
+			const new_date = changeDate(date_match.date, -1);
+			this.set_date(new_date, date_match.line, date_match.position);
+		}
 	}
 
 	get_due_date(): string {

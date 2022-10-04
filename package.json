@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.2.7",
+    "version": "0.3.0",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -76,14 +76,64 @@
             "editor/context": [
                 {
                     "when": "resourceLangId == xit",
+                    "submenu": "edit_task",
+                    "group": "xit_commands@1"
+                },
+                {
+                    "when": "resourceLangId == xit",
+                    "submenu": "insert_date",
+                    "group": "xit_commands@2"
+                },
+                {
+                    "when": "resourceLangId == xit",
                     "command": "xit.sortItems",
-                    "group": "xit_commands@5"
+                    "group": "xit_commands@5",
+                    "label": "Sort Items"
                 },
                 {
                     "when": "resourceLangId == xit",
                     "command": "xit.clearItems",
                     "group": "xit_commands@6"
                 },
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.shuffle",
+                    "group": "xit_commands@4"
+                },
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.toggle",
+                    "group": "xit_commands@3"
+                }
+            ],
+            "insert_date": [
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.currentDay",
+                    "group": "xit_commands@1"
+                },
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.currentWeek",
+                    "group": "xit_commands@2"
+                },
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.currentMonth",
+                    "group": "xit_commands@3"
+                },
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.currentQuarter",
+                    "group": "xit_commands@4"
+                },
+                {
+                    "when": "resourceLangId == xit",
+                    "command": "xit.currentYear",
+                    "group": "xit_commands@5"
+                }
+            ],
+            "edit_task": [
                 {
                     "when": "resourceLangId == xit",
                     "command": "xit.increasePriority",
@@ -96,16 +146,26 @@
                 },
                 {
                     "when": "resourceLangId == xit",
-                    "command": "xit.shuffle",
-                    "group": "xit_commands@2"
+                    "command": "xit.increaseDate",
+                    "group": "xit_commands@6"
                 },
                 {
                     "when": "resourceLangId == xit",
-                    "command": "xit.toggle",
-                    "group": "xit_commands@1"
+                    "command": "xit.decreaseDate",
+                    "group": "xit_commands@7"
                 }
             ]
         },
+        "submenus": [
+            {
+                "label": "XIT: Insert Date",
+                "id": "insert_date"
+            },
+            {
+                "label": "XIT: Edit Tasks",
+                "id": "edit_task"
+            }
+        ],
         "grammars": [
             {
                 "language": "xit",
@@ -138,6 +198,41 @@
                 "command": "xit.decreasePriority",
                 "key": "ctrl+down",
                 "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.increaseDate",
+                "key": "ctrl+pageup",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.decreaseDate",
+                "key": "ctrl+pagedown",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.currentDay",
+                "key": "ctrl+d",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.currentWeek",
+                "key": "ctrl+w",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.currentMonth",
+                "key": "ctrl+m",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.currentQuarter",
+                "key": "ctrl+q",
+                "when": "editorFocus && editorLangId == 'xit'"
+            },
+            {
+                "command": "xit.currentYear",
+                "key": "ctrl+y",
+                "when": "editorFocus && editorLangId == 'xit'"
             }
         ],
         "commands": [
@@ -168,6 +263,34 @@
             {
                 "title": "XIT: Sort by Due Date and Priority",
                 "command": "xit.sortItems"
+            },
+            {
+                "title": "XIT: Insert Current Day",
+                "command": "xit.currentDay"
+            },
+            {
+                "title": "XIT: Insert Current Week",
+                "command": "xit.currentWeek"
+            },
+            {
+                "title": "XIT: Insert Current Month",
+                "command": "xit.currentMonth"
+            },
+            {
+                "title": "XIT: Insert Current Quarter",
+                "command": "xit.currentQuarter"
+            },
+            {
+                "title": "XIT: Insert Current Year",
+                "command": "xit.currentYear"
+            },
+            {
+                "title": "XIT: Increase Date",
+                "command": "xit.increaseDate"
+            },
+            {
+                "title": "XIT: Decrease Date",
+                "command": "xit.decreaseDate"
             }
         ],
         "snippets": [
