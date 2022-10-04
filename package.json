@@ -87,8 +87,7 @@
                 {
                     "when": "resourceLangId == xit",
                     "command": "xit.sortItems",
-                    "group": "xit_commands@5",
-                    "label": "Sort Items"
+                    "group": "xit_commands@5"
                 },
                 {
                     "when": "resourceLangId == xit",
@@ -409,6 +408,13 @@
                         "invalid"
                     ]
                 }
+            }
+        ],
+        "themes": [
+            {
+                "label": "[x]it! theme",
+                "uiTheme": "vs-dark",
+                "path": "./themes/xit-theme-color-theme.json"
             }
         ]
     },
