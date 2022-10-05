@@ -622,10 +622,10 @@
 		"checkboxOngoing": { "foreground": "#b000bc", "bold": true, "italic": false, "underline": false },
 		"checkboxCompleted": { "foreground": "#00af29", "bold": true, "italic": false, "underline": false, "strikethrough": false },
 		"checkboxObsolete": { "foreground": "#828282", "bold": true, "italic": false, "underline": false, "strikethrough": false },
-		"priority": { "foreground": "#ff0000", "bold": true, "italic": false, "underline": false },
+		"priority": { "foreground": "#fd3d3d", "bold": true, "italic": false, "underline": false },
 		"dueDate": { "foreground": "#01dd01", "bold": false, "italic": false, "underline": false },	
-		"dueDateOverdue": { "foreground": "#f00000", "bold": false, "italic": false, "underline": false },
-		"tag": { "foreground": "#5cd0fd", "bold": true, "italic": true, "underline": false },
-		"wrongToken": { "foreground": "#c00000", "bold": true, "italic": true, "underline": true }
+		"dueDateOverdue": { "foreground": "#ff7878", "bold": false, "italic": false, "underline": false },
+		"tag": { "foreground": "#569CD6", "bold": true, "italic": true, "underline": false },
+		"wrongToken": { "foreground": "#ff0000", "bold": false, "italic": true, "underline": false }
 	}	  
 }
