@@ -619,7 +619,7 @@
 		"title": { "foreground": "#00ffff", "bold": true, "italic": false, "underline": true }, 
 		"itemClosed": { "foreground": "#008e09", "bold": false, "italic": true, "underline": false, "strikethrough": true },
 		"checkboxOpen": { "foreground": "#88bbfa", "bold": true, "italic": false, "underline": false },
-		"checkboxOngoing": { "foreground": "#b000bc", "bold": true, "italic": false, "underline": false },
+		"checkboxOngoing": { "foreground": "#C586C0", "bold": true, "italic": false, "underline": false },
 		"checkboxCompleted": { "foreground": "#00af29", "bold": true, "italic": false, "underline": false, "strikethrough": false },
 		"checkboxObsolete": { "foreground": "#828282", "bold": true, "italic": false, "underline": false, "strikethrough": false },
 		"priority": { "foreground": "#fd3d3d", "bold": true, "italic": false, "underline": false },

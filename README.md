@@ -15,6 +15,10 @@ This extension provides support for handling tasks in [xit!](https://xit.jotaen.
 
 ![screenshot showing the syntax highlighting](assets/screenshots/01.png)
 
+### Color Theme
+
+The extension is delivered with a color theme ([x]ìt! theme) included based on the Dark+ theme. It provides syntax highlighting for the semantic tokens used by the extension (see [Semantic Highlight](#semantic-highlight) below).
+
 ### Customization
 
 If the colors and looks of the syntax highlighting is not correct or as fancy as you want to, you can try to edit the `tokenColorCustomizations` in the user settings.
