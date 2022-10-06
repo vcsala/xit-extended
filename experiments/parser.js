@@ -17,7 +17,7 @@ const STATUS_SYMBOLS = {
   'obsolete': '~'
 };
 
-function tokenize(text: string) {
+function tokenize(text) {
   function invalidateRole(t) {
     delete t.role;
     delete t.status;
