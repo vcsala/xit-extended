@@ -1,0 +1,802 @@
+{
+  "groups": [
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Item without headline/grouping",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] ",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ]",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Open item",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] Checked item",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "ongoing",
+          "title": "[@] Ongoing (doing / in progress)",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "obsolete",
+          "title": "[~] Obsolete item",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "Checkboxes"
+    },
+    {
+      "items": [
+        {
+          "status": null,
+          "title": "[e] Foo",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": null,
+          "title": "[ ]Foo",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": null,
+          "title": "[  ] Foo",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "NOT Checkboxes"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Item descriptions can span multiple",
+          "description": [
+            "lines. Indentation must be 4 spaces."
+          ],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] Other special characters *can* be used",
+          "description": [
+            "(but don’t have pre-defined meaning)"
+          ],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "obsolete",
+          "title": "[~] The highlighting style of the item",
+          "description": [
+            "must be carried over to the subsequent",
+            "lines of the description."
+          ],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "Description"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Single item in between (with an indented blankline below)",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Item with #tag in the #text, for #categorising:#things.",
+          "description": [],
+          "tags": [
+            "#tag",
+            "#text",
+            "#categorising",
+            "#things"
+          ],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "ongoing",
+          "title": "[@] #nodescription",
+          "description": [],
+          "tags": [
+            "#nodescription"
+          ],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] That should also work on...",
+          "description": [
+            "...subsequent #lines."
+          ],
+          "tags": [
+            "#lines"
+          ],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] Tags can #have=values, which can also",
+          "description": [
+            "#be=\"quoted\" (#example='.! #foo')."
+          ],
+          "tags": [
+            "#have=values",
+            "#be=\"quoted\"",
+            "#example='.! #foo'"
+          ],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "Tags"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] This is not a#tag",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Where is the #closing=\"quote?",
+          "description": [],
+          "tags": [
+            "#closing"
+          ],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Where is the #closing='quote?",
+          "description": [],
+          "tags": [
+            "#closing"
+          ],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "NOT Tags"
+    },
+    {
+      "items": [],
+      "title": "Empty group"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Do this -> 2018-05-14",
+          "description": [],
+          "tags": [],
+          "dueDate": "2018-05-14",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Or with month only -> 2022-03",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-03",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Or with year only -> 2022",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Or with week -> 2022-W22",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] -> 2022-03-14 Due date can also be at beginning",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-03-14",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Or in -> 2022-03-14 between",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-03-14",
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] Or in the...",
+          "description": [
+            "...next line: -> 2022-03"
+          ],
+          "tags": [],
+          "dueDate": "2022-03",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Hyphens can also be slashes -> 2018/05/14",
+          "description": [],
+          "tags": [],
+          "dueDate": "2018",
+          "priority": null
+        },
+        {
+          "status": "obsolete",
+          "title": "[~] -> 2022-03-14",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-03-14",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Punctuation can follow -> 2022-05-03.",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-05-03",
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] Punctuation be all around (-> 2022-05-03)",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-05-03",
+          "priority": null
+        }
+      ],
+      "title": "Due Date"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] No trailing dash -> 2022-05-03-",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] No traling slash -> 2022-05-03/",
+          "description": [],
+          "tags": [],
+          "dueDate": "2022-05-03",
+          "priority": null
+        }
+      ],
+      "title": "NOT Due Dates"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] ! This is important",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 1
+        },
+        {
+          "status": "open",
+          "title": "[ ] !!! This is very important",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 3
+        },
+        {
+          "status": "open",
+          "title": "[ ] !!!!!!!! Priority level can be arbitrary",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 8
+        },
+        {
+          "status": "open",
+          "title": "[ ] ! ! ! . Only the first ! . one is the priority",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 1
+        },
+        {
+          "status": "open",
+          "title": "[ ] !.. Dots can be filled in for visual alignment",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 1
+        },
+        {
+          "status": "checked",
+          "title": "[x] ... It can also be all dots",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] ..! The exclamation can be at the end",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 1
+        },
+        {
+          "status": "ongoing",
+          "title": "[@] !",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": 1
+        },
+        {
+          "status": "obsolete",
+          "title": "[~] .",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "Priority"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] !!!There has to be a space in between",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] !.! But not mixed (that’s just description)",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ] .!. Neither is this priority",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": "open",
+          "title": "[ ]! Not cool",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ],
+      "title": "NOT Priorities"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] !! -> 2016-05-02 All items within this group are sorted...",
+          "description": [],
+          "tags": [],
+          "dueDate": "2016-05-02",
+          "priority": 2
+        },
+        {
+          "status": "open",
+          "title": "[ ] .! -> 2009-01-01 ...lexicographically. This implies the",
+          "description": [],
+          "tags": [],
+          "dueDate": "2009-01-01",
+          "priority": 1
+        },
+        {
+          "status": "open",
+          "title": "[ ] .! -> 2012-07-28 following hierarchy: open items first, then",
+          "description": [],
+          "tags": [],
+          "dueDate": "2012-07-28",
+          "priority": 1
+        },
+        {
+          "status": "open",
+          "title": "[ ] .! -> 2017-12-31 ongoing, then done, lastly obsolete ones.",
+          "description": [],
+          "tags": [],
+          "dueDate": "2017-12-31",
+          "priority": 1
+        },
+        {
+          "status": "ongoing",
+          "title": "[@] .. -> 2015-08-14 Within those kinds, the high-priority ones",
+          "description": [],
+          "tags": [],
+          "dueDate": "2015-08-14",
+          "priority": null
+        },
+        {
+          "status": "checked",
+          "title": "[x] !! -> 2000-02-06 come first. Within the priority levels, it’s",
+          "description": [],
+          "tags": [],
+          "dueDate": "2000-02-06",
+          "priority": 2
+        },
+        {
+          "status": "obsolete",
+          "title": "[~] !! -> 1970-11-11 sorted by due date, starting with the nearest.",
+          "description": [],
+          "tags": [],
+          "dueDate": "1970-11-11",
+          "priority": 2
+        }
+      ],
+      "title": "Lexicographic sorting"
+    },
+    {
+      "items": [],
+      "title": "NOT Anything"
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] Headline cannot appear",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        },
+        {
+          "status": null,
+          "title": "Underneatch an item",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": null,
+          "title": "    [ ] Items cannot be indented",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": null,
+          "title": " Neither can headlines",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": null,
+          "title": "[x Foo",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": null,
+          "title": "[]",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": null,
+          "title": "[5]",
+          "description": [],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "status": "open",
+          "title": "[ ] “Subitems”...",
+          "description": [
+            "[ ] are not recognised as item"
+          ],
+          "tags": [],
+          "dueDate": null,
+          "priority": null
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "message": "Checkbox must be followed by a space, an optional priority followed by one or more spaces and a description",
+      "line": "[ ] ",
+      "start": {
+        "line": 2
+      },
+      "end": {
+        "line": 2
+      }
+    },
+    {
+      "message": "Checkbox must be followed by a space, an optional priority followed by one or more spaces and a description",
+      "line": "[ ]",
+      "start": {
+        "line": 3
+      },
+      "end": {
+        "line": 3
+      }
+    },
+    {
+      "message": "\"e\" is not a valid status. Valid statuses are: \" \", \"@\", \"x\" or \"~\"",
+      "line": "[e] Foo",
+      "start": {
+        "line": 12,
+        "pos": 1
+      },
+      "end": {
+        "line": 12,
+        "pos": 3
+      }
+    },
+    {
+      "message": "Checkbox must be followed by a space, an optional priority followed by one or more spaces and a description",
+      "line": "[ ]Foo",
+      "start": {
+        "line": 13
+      },
+      "end": {
+        "line": 13
+      }
+    },
+    {
+      "message": "Item must begin with a valid checkbox",
+      "line": "[  ] Foo",
+      "start": {
+        "line": 14
+      },
+      "end": {
+        "line": 14
+      }
+    },
+    {
+      "message": "Priority must be followed by one or more spaces and a description",
+      "line": "[@] !",
+      "start": {
+        "line": 68
+      },
+      "end": {
+        "line": 68
+      }
+    },
+    {
+      "message": "Priority must be followed by one or more spaces and a description",
+      "line": "[~] .",
+      "start": {
+        "line": 69
+      },
+      "end": {
+        "line": 69
+      }
+    },
+    {
+      "message": "Checkbox must be followed by a space, an optional priority followed by one or more spaces and a description",
+      "line": "[ ]! Not cool",
+      "start": {
+        "line": 75
+      },
+      "end": {
+        "line": 75
+      }
+    },
+    {
+      "message": "Item must begin with a valid checkbox",
+      "line": "Underneatch an item",
+      "start": {
+        "line": 89
+      },
+      "end": {
+        "line": 89
+      }
+    },
+    {
+      "message": "Item must not begin with blank characters",
+      "line": "    [ ] Items cannot be indented",
+      "start": {
+        "line": 91
+      },
+      "end": {
+        "line": 91
+      }
+    },
+    {
+      "message": "Item must begin with a valid checkbox",
+      "line": "    [ ] Items cannot be indented",
+      "start": {
+        "line": 91
+      },
+      "end": {
+        "line": 91
+      }
+    },
+    {
+      "message": "Item must not begin with blank characters",
+      "line": " Neither can headlines",
+      "start": {
+        "line": 93
+      },
+      "end": {
+        "line": 93
+      }
+    },
+    {
+      "message": "Item must begin with a valid checkbox",
+      "line": " Neither can headlines",
+      "start": {
+        "line": 93
+      },
+      "end": {
+        "line": 93
+      }
+    },
+    {
+      "message": "Item must begin with a valid checkbox",
+      "line": "[x Foo",
+      "start": {
+        "line": 95
+      },
+      "end": {
+        "line": 95
+      }
+    },
+    {
+      "message": "Item must begin with a valid checkbox",
+      "line": "[]",
+      "start": {
+        "line": 97
+      },
+      "end": {
+        "line": 97
+      }
+    },
+    {
+      "message": "Checkbox must be followed by a space, an optional priority followed by one or more spaces and a description",
+      "line": "[5]",
+      "start": {
+        "line": 99
+      },
+      "end": {
+        "line": 99
+      }
+    },
+    {
+      "message": "\"5\" is not a valid status. Valid statuses are: \" \", \"@\", \"x\" or \"~\"",
+      "line": "[5]",
+      "start": {
+        "line": 99,
+        "pos": 1
+      },
+      "end": {
+        "line": 99,
+        "pos": 3
+      }
+    }
+  ]
+}

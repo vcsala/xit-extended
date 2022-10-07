@@ -17,23 +17,23 @@ const STATUS_SYMBOLS = {
   'obsolete': '~'
 };
 
+function invalidateRole(t) {
+  delete t.role;
+  delete t.status;
+  delete t.priority;
+  delete t.date;
+  delete t.hash;
+}
+
+function attachError(token, error) {
+  if (!token.errors) {
+    token.errors = [];
+  }
+
+  token.errors.push(error);
+}
+
 function tokenize(text) {
-  function invalidateRole(t) {
-    delete t.role;
-    delete t.status;
-    delete t.priority;
-    delete t.date;
-    delete t.hash;
-  }
-
-  function attachError(token, error) {
-    if (!token.errors) {
-      token.errors = [];
-    }
-
-    token.errors.push(error);
-  }
-
   const tokens = [];
   const lineTokens = [];
   const lines = text.replace(/\r\n/g, "\n").split(/\n/);
