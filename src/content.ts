@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as globals from './globals'
 import { eliminateDuplicates, range, formatDate, getYearWeekStart, replacePart, changeDate } from './utils'
 
 export const DEBUG = false;
@@ -62,11 +63,10 @@ export function compileStatus(char: string): ItemStatus {
 }
 
 export function getDate(line: string): { text: string, index: number } {
-	const re = /([^\w\s\/-]|[ ])-> ([0-9]{4}|[0-9]{4}-W?[0-9]{2}|[0-9]{4}-Q[0-9]|[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}\/W?[0-9]{2}|[0-9]{4}\/Q[0-9]|[0-9]{4}\/[0-9]{2}\/[0-9]{2})([ ]|$|[^\w\s?\/-])/;
-	const match = re.exec(line);
+	const match = globals.ALL_DATES_MASK.exec(line);
 
 	if (match) {
-		return { text: match[2].trim().replace("/", "-"), index: match.index + 4 } // ] as const;
+		return { text: match[2].trim().replace(globals.ALT_DATE_SEP, globals.DEFAULT_DATE_SEP), index: match.index + 4 };
 	}
 
 	return { text: "", index: -1 };
@@ -74,13 +74,13 @@ export function getDate(line: string): { text: string, index: number } {
 
 export function getDueDate(date: string): string {
 	if (date != "") {
-		const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
+		const match_full = globals.FULL_DATE_MASK.exec(date);
 
 		if (match_full) {
 			return date;
 		}
 
-		const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
+		const match_month = globals.MONTH_MASK.exec(date);
 
 		if (match_month) {
 			const year: number = parseInt(date.substring(0, 4));
@@ -89,7 +89,7 @@ export function getDueDate(date: string): string {
 			return formatDate(due_date);
 		}
 
-		const match_quarter = /[0-9]{4}-Q[1-4]/.exec(date);
+		const match_quarter = globals.QUARTER_MASK.exec(date);
 
 		if (match_quarter) {
 			const year: number = parseInt(date.substring(0, 4));
@@ -98,7 +98,7 @@ export function getDueDate(date: string): string {
 			return formatDate(due_date);
 		}
 
-		const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
+		const match_week = globals.WEEK_MASK.exec(date);
 
 		if (match_week) {
 			const year: number = parseInt(date.substring(0, 4));
@@ -108,7 +108,7 @@ export function getDueDate(date: string): string {
 			return formatDate(due_date);
 		}
 
-		const match_year = /[0-9]{4}/.exec(date);
+		const match_year = globals.YEAR_MASK.exec(date);
 
 		if (match_year) {
 			const year: number = parseInt(date);
@@ -122,7 +122,7 @@ export function getDueDate(date: string): string {
 }
 
 export function getPriorityString(text: string): string {
-	const match = /(?<=^\[[ x@~]\] )((?:!+\.*)|(?:\.*!+)|(?:\.+))(?: |$)/.exec(text);
+	const match = globals.PRIORITY_MASK.exec(text);
 
 	if (match) {
 		return match[1].trim();
@@ -193,10 +193,10 @@ class XitTask {
 	}
 
 	get_priority(): number {
-		const prio_str = getPriorityString(this.get_text());
+		const priority_str = getPriorityString(this.get_text());
 
-		if (prio_str != "") {
-			return (prio_str.match(/!/g) || []).length;
+		if (priority_str != "") {
+			return (priority_str.match(globals.PRIORITY_CHAR_MASK) || []).length;
 		}
 
 		return 0;
@@ -205,7 +205,7 @@ class XitTask {
 	set_priority(new_priority: string) {
 		let line = this.lines[0];
 
-		const match = /(?<=^\[[ x@~]\] )(?:(?:!+\.*)|(?:\.*!+)|(?:\.+))/.exec(line);
+		const match = globals.SHORT_PRIORITY_MASK.exec(line);
 
 		if (match) {
 			if (new_priority == "") {
@@ -256,16 +256,16 @@ class XitTask {
 		return "";
 	}
 
-	get_date_with_position(): {date: string, line: number, position: number} {
+	get_date_with_position(): { date: string, line: number, position: number } {
 		for (let i = 0; i < this.lines.length; i++) {
 			const date_match = getDate(this.get_text());
 
 			if (date_match.index > 0) {
-				return {date: date_match.text, line: i, position: date_match.index};
+				return { date: date_match.text, line: i, position: date_match.index };
 			}
 		}
 
-		return {date: "", line: -1, position: -1};
+		return { date: "", line: -1, position: -1 };
 	}
 
 	set_date(new_date: string, line: number, position: number) {
@@ -296,12 +296,11 @@ class XitTask {
 	}
 
 	get_tags(): string[] {
-		const re = /#([\p{L}\p{N}_\-]+)(?:=[\p{L}\p{N}_\-]+|="[^"\n]*"|='[^'\n]*')?/ug;
 		const text = this.get_text();
 		let output: string[] = []
 
 		for (let line of this.lines) {
-			let match = re.exec(text);
+			let match = globals.TAG_MASK.exec(text);
 
 			while (match) {
 				const tag = match[1];
@@ -310,7 +309,7 @@ class XitTask {
 					output.push(tag);
 				}
 
-				match = re.exec(text);
+				match = globals.TAG_MASK.exec(text);
 			}
 		}
 
@@ -466,15 +465,13 @@ function compareTasks(a: XitTask, b: XitTask): number {
 }
 
 export function readContent(document: vscode.TextDocument): XitGroup[] {
-	const re = /^\[[ x@~]\](?: |$)/;
-
 	let groups: XitGroup[] = [];
 	let current_group: XitGroup | null = null;
 	let current_task: XitTask | null = null;
 
 	for (let i = 0; i < document.lineCount; i++) {
 		const line = document.lineAt(i);
-		const match = re.exec(line.text);
+		const match = globals.CHECKBOX_MASK.exec(line.text);
 		if (match) {
 			if (current_task === null) {
 				current_task = new XitTask(line.text, i);
@@ -504,7 +501,7 @@ export function readContent(document: vscode.TextDocument): XitGroup[] {
 
 			current_group.add_header(line.text, i);
 		}
-		else { // title
+		else {
 			if (current_group === null) {
 				current_group = new XitGroup();
 			} else {
@@ -551,15 +548,14 @@ function findFirstLine(document: vscode.TextDocument, line: number): number {
 	while (index > 0) {
 		const text = document.lineAt(index).text;
 
-		const match = /^\[([^\]])*\]/.exec(text);
+		const match = globals.SIMPLE_CHECKBOX_MASK.exec(text);
 
 		if (match) {
 			return index;
 		}
 
-		const match_indented = /^ {4}\S/.exec(text);
-
-		if (!match_indented) {
+		const match_indent = globals.INDENT_MASK.exec(text);
+		if (!match_indent) {
 			return -1;
 		}
 
@@ -601,14 +597,14 @@ export function readSelectedTasks(editor: vscode.TextEditor): XitTask[] {
 	for (const line of lines) {
 		const text = editor.document.lineAt(line).text;
 
-		const match = /^\[([^\]])*\]/.exec(text);
+		const match = globals.SIMPLE_CHECKBOX_MASK.exec(text);
 		if (match) {
 			new_lines.push(line);
 			continue;
 		};
 
-		const match_indented = /^ {4}\S/.exec(text);
-		if (match_indented) {
+		const match_indent = globals.INDENT_MASK.exec(text);
+		if (match_indent) {
 			const first_line = findFirstLine(editor.document, line);
 
 			if (first_line > 0 && lines.indexOf(first_line) < 0 && new_lines.indexOf(first_line) < 0) {
@@ -621,13 +617,13 @@ export function readSelectedTasks(editor: vscode.TextEditor): XitTask[] {
 
 	let tasks: XitTask[] = [];
 
-	for (const line of new_lines) {
+	new_lines.forEach(line => {
 		const item = readTask(editor.document, line);
 
 		if (item !== null) {
 			tasks.push(item);
 		}
-	}
+	});
 
 	return tasks;
 }
@@ -648,9 +644,9 @@ export function selectionHasCheckboxes(editor: vscode.TextEditor) {
 
 	for (const line of lines) {
 		const text = editor.document.lineAt(line).text;
-		const match = /^\[([^\]])\]/.exec(text);
-		const match_indented = /^ {4}\S/.exec(text);
-		if (match || match_indented) return true;
+		const match = globals.SIMPLE_CHECKBOX_MASK.exec(text);
+		const match_indent = globals.INDENT_MASK.exec(text);
+		if (match || match_indent) return true;
 	}
 
 	return false;

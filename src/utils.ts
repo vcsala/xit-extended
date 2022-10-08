@@ -1,6 +1,5 @@
-import { match } from 'assert';
 import { writeFileSync } from 'fs';
-import { TestTag } from 'vscode';
+import * as globals from './globals'
 
 const MS_IN_DAYS = 24 * 60 * 60 * 1000;
 
@@ -98,7 +97,7 @@ export function getCurrentPeriod(period: Period): string {
 		case Period.Quarter:
 			const quarter = (Math.trunc(today.getMonth() / 3) + 1).toString();
 			return year + "-Q" + quarter;
-	
+
 		case Period.Year:
 			return year;
 	}
@@ -115,7 +114,7 @@ export function replacePart(text: string, new_part: string, start: number): stri
 
 export function changeDate(date: string, delta: number): string {
 	if (date != "") {
-		const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
+		const match_full = globals.FULL_DATE_MASK.exec(date);
 
 		if (match_full) {
 			let year: number = parseInt(date.substring(0, 4));
@@ -145,7 +144,7 @@ export function changeDate(date: string, delta: number): string {
 			return pad(year, 4) + "-" + pad(month, 2) + "-" + pad(day, 2);
 		}
 
-		const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
+		const match_month = globals.MONTH_MASK.exec(date);
 
 		if (match_month) {
 			let year: number = parseInt(date.substring(0, 4));
@@ -162,7 +161,7 @@ export function changeDate(date: string, delta: number): string {
 			return pad(year, 4) + "-" + pad(month, 2);
 		}
 
-		const match_quarter = /[0-9]{4}-Q[0-9]/.exec(date);
+		const match_quarter = globals.ALT_QUARTER_MASK.exec(date);
 
 		if (match_quarter) {
 			let year: number = parseInt(date.substring(0, 4));
@@ -179,7 +178,7 @@ export function changeDate(date: string, delta: number): string {
 			return pad(year, 4) + "-Q" + quarter.toString();
 		}
 
-		const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
+		const match_week = globals.WEEK_MASK.exec(date);
 
 		if (match_week) {
 			let year: number = parseInt(date.substring(0, 4));
@@ -196,7 +195,7 @@ export function changeDate(date: string, delta: number): string {
 			return pad(year, 4) + "-W" + pad(week, 2);
 		}
 
-		const match_year = /[0-9]{4}/.exec(date);
+		const match_year = globals.YEAR_MASK.exec(date);
 
 		if (match_year) {
 			let year: number = parseInt(date) + delta;

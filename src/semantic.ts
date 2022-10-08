@@ -1,17 +1,18 @@
 import * as vscode from 'vscode';
 import { ParsingState, getDate, getPriorityString, compileStatus, ItemStatus, getDueDate } from './content';
 import { getToday } from './utils';
+import * as globals from './globals'
 
 const tokenTypesLegend = [
-    'title', 
-    'itemClosed', 
-    'checkboxOpen', 
+    'title',
+    'itemClosed',
+    'checkboxOpen',
     'checkboxOngoing',
-    'checkboxCompleted', 
-    'checkboxObsolete', 
-    'priority', 
-    'dueDate', 
-    'dueDateOverdue', 
+    'checkboxCompleted',
+    'checkboxObsolete',
+    'priority',
+    'dueDate',
+    'dueDateOverdue',
     'tag',
     'wrongToken'
 ];
@@ -78,9 +79,8 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
     }
 
     _getTags(text: string, line_no: number): IParsedToken[] {
-        const re = /#[\p{L}\p{N}_\-]+(?:=[\p{L}\p{N}_\-]+|="[^"\n]*"|='[^'\n]*')?/ug;
         let tokens: IParsedToken[] = []
-        let match = re.exec(text);
+        let match = globals.TAG_MASK.exec(text);
 
         while (match) {
             const tag = match[0];
@@ -95,7 +95,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                 });
             }
 
-            match = re.exec(text);
+            match = globals.TAG_MASK.exec(text);
         }
 
         return tokens;
@@ -221,7 +221,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                                 let due_date = getDueDate(date);
                                 due_date = (due_date == "") ? "9999-99-99" : due_date;
                                 let token = (due_date < today) ? 'dueDateOverdue' : 'dueDate';
-    
+
                                 tokens.push({
                                     line: i,
                                     startCharacter: date_match.index - 3,
@@ -265,9 +265,9 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                         tokenType: 'title',
                         tokenModifier: '',
                     });
-    
+
                     have_date = false;
-                    parsing_state = ParsingState.Title;    
+                    parsing_state = ParsingState.Title;
                 }
             }
         }
