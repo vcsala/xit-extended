@@ -278,6 +278,6 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
 
 
 export function registerSemanticProvider() {
-    const selector = { language: 'xit', scheme: 'file' }; // register for all Java documents from the local file system
+    const selector = { language: 'xit', scheme: 'file' };
     vscode.languages.registerDocumentSemanticTokensProvider(selector, new XitSemanticTokensProvider, legend);
 }
