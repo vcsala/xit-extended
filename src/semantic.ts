@@ -7,6 +7,7 @@ import { getToday } from './utils';
 const tokenTypesLegend = [
     'title',
     'itemClosed',
+    'itemObsolete',
     'checkboxOpen',
     'checkboxOngoing',
     'checkboxCompleted',
@@ -142,12 +143,20 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                         tokenModifier: 'none',
                     });
 
-                    if (item_state == ItemStatus.Completed || item_state == ItemStatus.Obsolete) {
+                    if (item_state == ItemStatus.Completed) {
                         tokens.push({
                             line: i,
                             startCharacter: 4,
                             length: text.length - 4,
                             tokenType: 'itemClosed',
+                            tokenModifier: 'none',
+                        });
+                    } else if (item_state == ItemStatus.Obsolete) {
+                        tokens.push({
+                            line: i,
+                            startCharacter: 4,
+                            length: text.length - 4,
+                            tokenType: 'itemObsolete',
                             tokenModifier: 'none',
                         });
                     } else {
@@ -205,12 +214,20 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
 
                     parsing_state = ParsingState.Invalid;
                 } else {
-                    if (item_state == ItemStatus.Completed || item_state == ItemStatus.Obsolete) {
+                    if (item_state == ItemStatus.Completed) {
                         tokens.push({
                             line: i,
                             startCharacter: 4,
                             length: text.length - 4,
                             tokenType: 'itemClosed',
+                            tokenModifier: 'none',
+                        });
+                    } else if (item_state == ItemStatus.Obsolete) {
+                        tokens.push({
+                            line: i,
+                            startCharacter: 4,
+                            length: text.length - 4,
+                            tokenType: 'itemObsolete',
                             tokenModifier: 'none',
                         });
                     } else {

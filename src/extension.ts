@@ -120,7 +120,6 @@ function decreaseDateOfSelected(editor: vscode.TextEditor) {
 
 function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, period: Period) {
 	editor.selections.forEach((selection, i) => {
-		let text = "FooBar " + i;
 		edit.insert(selection.active, getCurrentPeriod(period));
 	})
 }

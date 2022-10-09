@@ -44,15 +44,22 @@ export function compileStatus(char: string): ItemStatus {
 	return ItemStatus.Unknown;
 }
 
-export function getDate(line: string): { text: string, index: number } {
+export function getRawDate(line: string): { text: string, index: number } {
 	const match = globals.ALL_DATES_MASK.exec(line);
 
 	if (match) {
 		const date = match[2].trim().replace(globals.ALT_DATE_SEP, globals.DEFAULT_DATE_SEP);
+		return { text: date, index: match.index + 4 };
+	}
 
-		if (IsValidDate(date)) {
-			return { text: date, index: match.index + 4 };
-		}
+	return { text: "", index: -1 };
+}
+
+export function getDate(line: string): { text: string, index: number } {
+	const date_match = getRawDate(line);
+
+	if (IsValidDate(date_match.text)) {
+		return date_match;
 	}
 
 	return { text: "", index: -1 };

@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -342,7 +342,12 @@
             {
                 "id": "itemClosed",
                 "superType": "variable",
-                "description": "Due date"
+                "description": "Completed item"
+            },
+            {
+                "id": "itemObsolete",
+                "superType": "variable",
+                "description": "Obsolete item"
             },
             {
                 "id": "tag",
@@ -384,6 +389,10 @@
                         "source.xit"
                     ],
                     "itemClosed": [
+                        "comment.xit",
+                        "markup.strikethrough.xit"
+                    ],
+                    "itemObsolete": [
                         "comment.xit",
                         "markup.strikethrough.xit"
                     ],

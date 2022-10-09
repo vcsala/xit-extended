@@ -12,8 +12,8 @@ Features
 [ ] A task can have a due date -> 2024-02-29
 [ ] Due date can be overdue -> 2022-09-25
 [ ] Due date can be in weeks -> 2022-W41
-[ ] or months -> 2023-01
-[ ] or quarters -> 2023-Q3
+[ ] or months -> 2022-12
+[ ] or quarters -> 2023-Q1
 [ ] or even years -> 2022
 [ ] Task can be written
     in several lines 

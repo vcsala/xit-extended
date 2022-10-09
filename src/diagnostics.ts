@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getDate } from './content';
+import { getRawDate } from './content';
 import * as globals from './globals'
 import { ParsingState } from './globals'
 import { checkDate } from './utils';
@@ -55,7 +55,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 
 				parsing_state = ParsingState.Title;
 			} else {
-				const date_match = getDate(line.text);
+				const date_match = getRawDate(line.text);
 
 				if (date_match.index > 0) {
 					const date = date_match.text;
@@ -99,7 +99,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 				parsing_state = ParsingState.Title;
 			} else {
 				if (!have_date) {
-					const date_match = getDate(line.text);
+					const date_match = getRawDate(line.text);
 
 					if (date_match.index > 0) {
 						const date = date_match.text;

@@ -3,13 +3,17 @@
 [//]: <> (All notable changes to the "xit-extended" extension will be documented in this file.)
 [//]: <> (Check [Keep a Changelog]\(http://keepachangelog.com/\) for recommendations on how to structure this file.)
 
-## [0.3.3] - 2022-10-05
+## [0.3.4] - 2022-10-09
 
 Beta release. Color theme added.
 
 ### Added
 
 - New color theme (based on the Dark+ theme) with the [x]it! semantic tokens
+
+### Changed
+
+- Code refactoring
 
 ## [0.3.0] - 2022-10-04
 
