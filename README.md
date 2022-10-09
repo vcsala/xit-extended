@@ -93,7 +93,7 @@ There are several commands available to help users managing their tasks:
 
 ## Context menu
 
-All commands, excpet the XIT: Suggest command, is available in the editor context menu (right click on the document with the mouse).
+All commands, except the XIT: Suggest command, is available in the editor context menu (right click on the document with the mouse).
 
 ## Shortcuts
 
