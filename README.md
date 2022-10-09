@@ -2,14 +2,14 @@
 
 This extension provides support for handling tasks in [xit!](https://xit.jotaen.net/) format.
 
-- [Syntax Highlighting](#syntax-highlighting)
-- [Commands](#commands)
-- [Context menu](#context-menu)
-- [Shortcuts](#shortcuts)
-- [Snippets](#snippets)
-- [Completion](#completion)
-- [Semantic Highlight](#semantic-highlight)
-- [Configuration](#configuration)
+  - [Syntax Highlighting](#syntax-highlighting)
+  - [Commands](#commands)
+  - [Context menu](#context-menu)
+  - [Shortcuts](#shortcuts)
+  - [Snippets](#snippets)
+  - [Completion](#completion)
+  - [Semantic Highlight](#semantic-highlight)
+  - [Configuration](#configuration)
 
 ## Syntax Highlighting
 
@@ -21,7 +21,7 @@ The extension is delivered with a color theme ([x]ìt! theme) included based on 
 
 ### Customization
 
-If the colors and looks of the syntax highlighting is not correct or as fancy as you want to, you can try to edit the `tokenColorCustomizations` in the user settings.
+If you are not using the included color theme and the colors and looks of the syntax highlighting is not correct or as fancy as you want to, you can try to edit the `tokenColorCustomizations` in the user settings.
 
 ```javascript
 {
@@ -51,9 +51,9 @@ If the colors and looks of the syntax highlighting is not correct or as fancy as
 }
 ```
 
-### Strikethrough Not Working?
+### Strike through Not Working?
 
-If closed tasks (completed/obsolete) are not striketroughed, then you may want to explicitly specify that the strikethrough scope is striketroughed. This is happening because your theme did not specify the striketrough rule.
+If closed tasks (completed/obsolete) are not stroke trough, then you may want to explicitly specify that the strike through scope is stroke trough. This is happening because your theme did not specify the strike trough rule.
 
 ```json
 {
@@ -110,7 +110,9 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 - `ctrl-q` - Insert current quarter at the cursor position
 - `ctrl-y` - Insert current year at the cursor position
 - `ctrl-pageup` - Increase date
-- `crel-pagedown` - Decrease date
+- `ctrl-pagedown` - Decrease date
+
+If some of shortcuts are already used by your current keyboard settings you have to change / remap these functions to use them.
 
 ## Snippets
 
@@ -129,7 +131,8 @@ Typing `#`, the extensions offers the tags already exist in the file as a comple
 A semantic tokenization is implemented, which helps to be more compliant with  the specification. The following semantic tokens are introduced which can be used in color themes:
 
 - `title` - title lines
-- `itemClosed` - The description of checked (completed) and obsolete items
+- `itemClosed` - The description of checked (completed) items
+- `itemObsolete` - The description of obsolete items
 - `checkboxOpen` - Open checkbox (`[ ] `)
 - `checkboxOngoing` - Ongoing checkbox (`[@] `)
 - `checkboxCompleted` - Checked (completed) checkbox (`[x] `)
@@ -139,6 +142,26 @@ A semantic tokenization is implemented, which helps to be more compliant with  t
 - `dueDateOverdue` - due date part of the description (only on open or ongoing items), where the due date has been already passed
 - `tag` - tags in description (only on open or ongoing items)
 - `wrongToken` - lines which cannot be parsed (they do not follow the specification)
+
+Below is a small example how to add this to your color theme (using `...` for brevity):
+
+```json
+	"semanticHighlighting": true,
+	"semanticTokenColors": {
+		"title": { "foreground": "#00ffff", "bold": true, "italic": false, "underline": true },
+		"itemClosed": { "foreground": "#008e09", "bold": false, "italic": true, "underline": false, "strikethrough": true },
+		"itemObsolete": ...,
+		"checkboxOpen": ...,
+		"checkboxOngoing": ...,
+		"checkboxCompleted": ...,
+		"checkboxObsolete": ...,
+		"priority": ...,
+		"dueDate": ...,
+		"dueDateOverdue": ...,
+		"tag": ...,
+		"wrongToken": ...
+	}
+```
 
 ## Configuration
 

@@ -477,7 +477,7 @@ export function readContent(document: vscode.TextDocument): XitGroup[] {
 				current_task = new XitTask(line.text, i);
 			}
 		}
-		else if (line.text.startsWith("    ") && line.text.trim() != "") {
+		else if (line.text.startsWith("    ") && line.text.trim() != "" && current_task !== null) {
 			current_task?.add_line(line.text);
 		}
 		else if (line.text.trim() == "") {

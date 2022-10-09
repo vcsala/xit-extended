@@ -14,6 +14,7 @@ Beta release. Color theme added.
 ### Changed
 
 - Code refactoring
+- Various small bug fixes
 
 ## [0.3.0] - 2022-10-04
 
