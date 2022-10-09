@@ -161,7 +161,7 @@ export function changeDate(date: string, delta: number): string {
 			return pad(year, 4) + "-" + pad(month, 2);
 		}
 
-		const match_quarter = globals.ALT_QUARTER_MASK.exec(date);
+		const match_quarter = globals.QUARTER_MASK.exec(date);
 
 		if (match_quarter) {
 			let year: number = parseInt(date.substring(0, 4));
@@ -204,4 +204,62 @@ export function changeDate(date: string, delta: number): string {
 	}
 
 	return "";
+}
+
+function isValid(year: number, month: number, day: number): boolean {
+	return month >= 1 && month <= 12 && day > 0 && day <= daysInMonth(year, month);
+}
+
+export function checkDate(date: string): string {
+	const match_full = globals.FULL_DATE_MASK.exec(date);
+
+	if (match_full) {
+		const year: number = parseInt(date.substring(0, 4));
+		const month: number = parseInt(date.substring(5, 7));
+		const day: number = parseInt(date.substring(8));
+
+		if (!isValid(year, month, day)) {
+			return "Invalid month or day";
+		}
+	}
+
+	const match_month = globals.MONTH_MASK.exec(date);
+
+	if (match_month) {
+		const year: number = parseInt(date.substring(0, 4));
+		const month: number = parseInt(date.substring(5));
+
+		if (month < 1 || month > 12) {
+			return "Invalid month";
+		}
+	}
+
+	const match_quarter = globals.QUARTER_MASK.exec(date);
+
+	if (match_quarter) {
+		const year: number = parseInt(date.substring(0, 4));
+		const quarter: number = parseInt(date.substring(6));
+
+		if (quarter < 1 || quarter > 4) {
+			return "Invalid quarter";
+		}
+	}
+
+	const match_week = globals.WEEK_MASK.exec(date);
+
+	if (match_week) {
+		const year: number = parseInt(date.substring(0, 4));
+		const week: number = parseInt(date.substring(6));
+		const max_week: number = getNumberOfWeeks(year);
+
+		if (week < 1 || week > max_week) {
+			return "Invalid week number";
+		}
+	}
+
+	return "";
+}
+
+export function IsValidDate(date: string): boolean {
+	return (checkDate(date) == "");
 }

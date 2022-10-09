@@ -1,25 +1,7 @@
 import * as vscode from 'vscode';
 import * as globals from './globals'
-import { eliminateDuplicates, range, formatDate, getYearWeekStart, replacePart, changeDate } from './utils'
-
-export const DEBUG = false;
-
-export enum ItemStatus {
-	Unknown,
-	Open,
-	Ongoing,
-	Completed,
-	Obsolete
-}
-
-export enum ParsingState {
-	Start,
-	BlankLine,
-	Title,
-	TaskHead,
-	TaskBody,
-	Invalid
-}
+import { ItemStatus } from './globals'
+import { eliminateDuplicates, range, formatDate, getYearWeekStart, replacePart, changeDate, IsValidDate } from './utils'
 
 function shiftStatus(status: ItemStatus): ItemStatus {
 	switch (status) {
@@ -54,7 +36,7 @@ function translateStatus(status: ItemStatus): string {
 export function compileStatus(char: string): ItemStatus {
 	switch (char) {
 		case " ": return ItemStatus.Open;
-		case "@": return ItemStatus.Ongoing;
+		case "@": return ItemStatus.Ongoing; 0
 		case "x": return ItemStatus.Completed;
 		case "~": return ItemStatus.Obsolete;
 	}
@@ -66,7 +48,11 @@ export function getDate(line: string): { text: string, index: number } {
 	const match = globals.ALL_DATES_MASK.exec(line);
 
 	if (match) {
-		return { text: match[2].trim().replace(globals.ALT_DATE_SEP, globals.DEFAULT_DATE_SEP), index: match.index + 4 };
+		const date = match[2].trim().replace(globals.ALT_DATE_SEP, globals.DEFAULT_DATE_SEP);
+
+		if (IsValidDate(date)) {
+			return { text: date, index: match.index + 4 };
+		}
 	}
 
 	return { text: "", index: -1 };
@@ -327,7 +313,7 @@ class XitTask {
 	}
 
 	to_string(): string {
-		if (DEBUG && this.lines.length > 0) {
+		if (globals.DEBUG && this.lines.length > 0) {
 			this.lines[0] = this.lines[0] + " | date: " + this.get_date();
 		}
 
@@ -617,13 +603,13 @@ export function readSelectedTasks(editor: vscode.TextEditor): XitTask[] {
 
 	let tasks: XitTask[] = [];
 
-	new_lines.forEach(line => {
+	for (let line of new_lines) {
 		const item = readTask(editor.document, line);
 
 		if (item !== null) {
 			tasks.push(item);
 		}
-	});
+	}
 
 	return tasks;
 }

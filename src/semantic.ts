@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { ParsingState, getDate, getPriorityString, compileStatus, ItemStatus, getDueDate } from './content';
-import { getToday } from './utils';
+import { getDate, getPriorityString, compileStatus, getDueDate } from './content';
 import * as globals from './globals'
+import { ParsingState, ItemStatus } from './globals'
+import { getToday } from './utils';
 
 const tokenTypesLegend = [
     'title',

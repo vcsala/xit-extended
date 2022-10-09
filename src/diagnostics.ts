@@ -1,62 +1,11 @@
 import * as vscode from 'vscode';
-import { ParsingState, getDate } from './content';
-import { daysInMonth } from './utils';
-
-function isValid(year: number, month: number, day: number): boolean {
-	return month >= 1 && month <= 12 && day > 0 && day <= daysInMonth(year, month);
-}
-
-function checkDate(date: string): string {
-	const match_full = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.exec(date);
-
-	if (match_full) {
-		const year: number = parseInt(date.substring(0, 4));
-		const month: number = parseInt(date.substring(5, 7));
-		const day: number = parseInt(date.substring(8));
-
-		if (!isValid(year, month, day)) {
-			return "Invalid month or day";
-		}
-	}
-
-	const match_month = /[0-9]{4}-[0-9]{2}/.exec(date);
-
-	if (match_month) {
-		const year: number = parseInt(date.substring(0, 4));
-		const month: number = parseInt(date.substring(5));
-
-		if (month < 1 || month > 12) {
-			return "Invalid month";
-		}
-	}
-
-	const match_quarter = /[0-9]{4}-Q[0-9]/.exec(date);
-
-	if (match_quarter) {
-		const year: number = parseInt(date.substring(0, 4));
-		const quarter: number = parseInt(date.substring(6));
-
-		if (quarter < 1 || quarter > 4) {
-			return "Invalid quarter";
-		}
-	}
-
-	const match_week = /[0-9]{4}-W[0-9]{2}/.exec(date);
-
-	if (match_week) {
-		const year: number = parseInt(date.substring(0, 4));
-		const week: number = parseInt(date.substring(6));
-
-		if (week < 1 || week > 52) {
-			return "Invalid week number";
-		}
-	}
-
-	return "";
-}
+import { getDate } from './content';
+import * as globals from './globals'
+import { ParsingState } from './globals'
+import { checkDate } from './utils';
 
 function getPriority(line: string): string {
-	const match = /^\[[ x@~]\] \s*([!\.]+)/.exec(line);
+	const match = globals.ALT_PRIORITY_MASK.exec(line);
 
 	if (match) {
 		return match[1];
@@ -70,7 +19,7 @@ function checkPriority(priority: string): string {
 		return "The dots should appear either before or after the exclamation mark(s). (So they can neither appear in between nor on both sides.)";
 	}
 
-	const match = /\.*!+\.+!+\.*/.exec(priority);
+	const match = globals.WRONG_PRIORITY_MASK.exec(priority);
 
 	if (match) {
 		return "The dots should appear either before or after the exclamation mark(s). (So they can neither appear in between nor on both sides.)"
@@ -87,7 +36,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 	for (let i = 0; i < document.lineCount; i++) {
 		let line = document.lineAt(i);
 		if (line.text.startsWith("\[")) {
-			const match = /^\[[ x@~]\]( |$)/.exec(line.text);
+			const match = globals.CHECKBOX_MASK.exec(line.text);
 
 			if (!match) {
 				const closing_index = line.text.indexOf("]");
@@ -177,7 +126,7 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 				diagnostics.push(diagnostic);
 			}
 
-			const match = /^\s+|^\[/.exec(line.text);
+			const match = globals.WRONG_TITLE_MASK.exec(line.text);
 
 			if (match) {
 				const range = new vscode.Range(i, 0, i, line.text.length);
