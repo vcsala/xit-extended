@@ -104,11 +104,11 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 - `ctrl+alt+d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
 - `ctrl+up` - Increase priority of all selected tasks.
 - `ctrl+down` - Decrease priority of all selected tasks (if possible).
-- `ctrl-d` - Insert current day at the cursor position
-- `ctrl-w` - Insert current week at the cursor position
-- `ctrl-m` - Insert current month at the cursor position
-- `ctrl-q` - Insert current quarter at the cursor position
-- `ctrl-y` - Insert current year at the cursor position
+- `ctrl-d ctrl-d` - Insert current day at the cursor position
+- `ctrl-d ctrl-w` - Insert current week at the cursor position
+- `ctrl-d ctrl-m` - Insert current month at the cursor position
+- `ctrl-d ctrl-q` - Insert current quarter at the cursor position
+- `ctrl-d ctrl-y` - Insert current year at the cursor position
 - `ctrl-pageup` - Increase date
 - `ctrl-pagedown` - Decrease date
 
