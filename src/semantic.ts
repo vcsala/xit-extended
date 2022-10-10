@@ -122,7 +122,7 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                     next_char = text.charAt(close_index + 1);
                 }
 
-                if (close_index < 0 || next_char != " " || status_char.length != 1 || " @x~".indexOf(status_char) < 0) {
+                if (close_index < 0 || next_char != " " || status_char.length != 1 || globals.VALID_STATUS_CHARS.indexOf(status_char) < 0) {
                     tokens.push({
                         line: i,
                         startCharacter: 0,

@@ -88,8 +88,13 @@ export function getCurrentPeriod(period: Period): string {
 	switch (period) {
 		case Period.Week:
 			const days_between = (today.getTime() - getYearWeekStart(today.getFullYear()).getTime()) / MS_IN_DAYS;
-			const week = Math.trunc(days_between / 7) + 1
-			return year + "-W" + pad(week + 1, 2);
+			let week = days_between / 7;
+
+			if (week != Math.trunc(week)) {
+				week = Math.trunc(week) + 1;
+			}
+			
+			return year + "-W" + pad(week, 2);
 
 		case Period.Month:
 			return year + "-" + pad(today.getMonth() + 1, 2);

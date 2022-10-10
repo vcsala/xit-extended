@@ -17,6 +17,7 @@ export const WRONG_TITLE_MASK = /^\s+|^\[/;
 
 export const DEFAULT_DATE_SEP = "-";
 export const ALT_DATE_SEP = "/";
+export const VALID_STATUS_CHARS = " @x~";
 
 export const DEBUG = false;
 
