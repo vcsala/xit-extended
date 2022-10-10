@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -23,6 +23,13 @@
         "onCommand:xit.sortItems",
         "onCommand:xit.increasePriority",
         "onCommand:xit.decreasePriority",
+        "onCommand:xit.increaseDate",
+        "onCommand:xit.decreaseDate",
+        "onCommand:xit.currentDay",
+        "onCommand:xit.currentWeek",
+        "onCommand:xit.currentMonth",
+        "onCommand:xit.currentQuarter",
+        "onCommand:xit.currentYear",
         "onLanguage:xit"
     ],
     "main": "./dist/extension.js",
