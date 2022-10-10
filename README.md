@@ -2,14 +2,14 @@
 
 This extension provides support for handling tasks in [xit!](https://xit.jotaen.net/) format.
 
-  - [Syntax Highlighting](#syntax-highlighting)
-  - [Commands](#commands)
-  - [Context menu](#context-menu)
-  - [Shortcuts](#shortcuts)
-  - [Snippets](#snippets)
-  - [Completion](#completion)
-  - [Semantic Highlight](#semantic-highlight)
-  - [Configuration](#configuration)
+- [Syntax Highlighting](#syntax-highlighting)
+- [Commands](#commands)
+- [Context menu](#context-menu)
+- [Shortcuts](#shortcuts)
+- [Snippets](#snippets)
+- [Completion](#completion)
+- [Semantic Highlight](#semantic-highlight)
+- [Configuration](#configuration)
 
 ## Syntax Highlighting
 
