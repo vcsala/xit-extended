@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -210,27 +210,27 @@
             },
             {
                 "command": "xit.currentDay",
-                "key": "ctrl+d",
+                "key": "ctrl+d ctrl+d",
                 "when": "editorFocus && editorLangId == 'xit'"
             },
             {
                 "command": "xit.currentWeek",
-                "key": "ctrl+w",
+                "key": "ctrl+d ctrl+w",
                 "when": "editorFocus && editorLangId == 'xit'"
             },
             {
                 "command": "xit.currentMonth",
-                "key": "ctrl+m",
+                "key": "ctrl+d ctrl+m",
                 "when": "editorFocus && editorLangId == 'xit'"
             },
             {
                 "command": "xit.currentQuarter",
-                "key": "ctrl+q",
+                "key": "ctrl+d ctrl+q",
                 "when": "editorFocus && editorLangId == 'xit'"
             },
             {
                 "command": "xit.currentYear",
-                "key": "ctrl+y",
+                "key": "ctrl+d ctrl+y",
                 "when": "editorFocus && editorLangId == 'xit'"
             }
         ],
@@ -317,22 +317,22 @@
             {
                 "id": "checkboxOpen",
                 "superType": "storage",
-                "description": "Checkbox"
+                "description": "Open checkbox"
             },
             {
                 "id": "checkboxOngoing",
                 "superType": "keyword",
-                "description": "Checkbox"
+                "description": "Ongoing checkbox"
             },
             {
                 "id": "checkboxCompleted",
                 "superType": "comment",
-                "description": "Checkbox"
+                "description": "Completed checkbox"
             },
             {
                 "id": "checkboxObsolete",
                 "superType": "source",
-                "description": "Checkbox"
+                "description": "Obsolete checkbox"
             },
             {
                 "id": "priority",
