@@ -65,18 +65,16 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
     private _encodeTokenType(tokenType: string): number {
         if (this.tokenTypes.has(tokenType)) {
             return this.tokenTypes.get(tokenType)!;
-        } else if (tokenType === 'notInLegend') {
-            return this.tokenTypes.size + 2;
         }
+
         return 0;
     }
 
     private _encodeTokenModifiers(tokenModifier: string): number {
         if (this.tokenModifiers.has(tokenModifier)) {
             return this.tokenModifiers.get(tokenModifier)!;
-        } else if (tokenModifier === 'notInLegend') {
-            return this.tokenModifiers.size + 2;
         }
+        
         return 0;
     }
 
@@ -165,7 +163,6 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                         if (date_match.index > 0) {
                             const date = date_match.text;
                             let due_date = getDueDate(date);
-                            due_date = (due_date == "") ? "9999-99-99" : due_date;
                             let token = (due_date < today) ? 'dueDateOverdue' : 'dueDate';
 
                             tokens.push({
@@ -237,7 +234,6 @@ class XitSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider
                             if (date_match.index > 0) {
                                 const date = date_match.text;
                                 let due_date = getDueDate(date);
-                                due_date = (due_date == "") ? "9999-99-99" : due_date;
                                 let token = (due_date < today) ? 'dueDateOverdue' : 'dueDate';
 
                                 tokens.push({

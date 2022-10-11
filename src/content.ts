@@ -111,7 +111,7 @@ export function getDueDate(date: string): string {
 		}
 	}
 
-	return "";
+	return globals.MAX_DATE;
 }
 
 export function getPriorityString(text: string): string {
@@ -434,9 +434,6 @@ function compareTasks(a: XitTask, b: XitTask): number {
 	let b_due_date = b.get_due_date();
 	const a_priority = a.get_priority();
 	const b_priority = b.get_priority();
-
-	a_due_date = (a_due_date == "") ? "9999-99-99" : a_due_date;
-	b_due_date = (b_due_date == "") ? "9999-99-99" : b_due_date;
 
 	if (a_due_date < b_due_date) {
 		return -1;

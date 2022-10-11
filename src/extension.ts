@@ -7,6 +7,7 @@ import { TAG_START, XitCompletionItemProvider } from './completion';
 import { registerSemanticProvider } from './semantic'
 import { join, dirname } from 'path';
 import { getCurrentPeriod, syncWriteFile, Period } from './utils';
+import { XitCodeLensProvider } from './codelens';
 
 let disposables: vscode.Disposable[] = [];
 
@@ -136,6 +137,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const completionDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'xit' }, new XitCompletionItemProvider(), TAG_START);
 	disposables.push(completionDisposable);
+
+    context.subscriptions.push(vscode.languages.registerCodeLensProvider({ scheme: 'file', language: 'xit' }, new XitCodeLensProvider()));
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('xit.toggle', () => {

@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.3.6",
+    "version": "0.4.0",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -49,6 +49,9 @@
             "triggerCharacters": [
                 "#"
             ]
+        },
+        "codeLensProvider" : {
+            "resolveProvider": "false"
         }
     },
     "contributes": {

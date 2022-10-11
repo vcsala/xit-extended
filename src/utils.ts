@@ -49,6 +49,13 @@ export function getToday(): string {
 	return formatDate(today);
 }
 
+export function getTomorrow(): string {
+	const today = new Date()
+	const tomorrow = new Date(today)
+	tomorrow.setDate(tomorrow.getDate() + 1)
+	return formatDate(tomorrow);	
+}
+
 export function getYearWeekStart(year: number): Date {
 	let year_start = new Date(year, 0, 1);
 	const year_start_day = year_start.getDay();
