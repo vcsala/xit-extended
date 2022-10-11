@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -80,6 +80,11 @@
                     "type": "string",
                     "default": "deleted.xit",
                     "description": "The filename to save the removed items (in the same directory as the edited file is)"
+                },
+                "xit-extended.enableCodeLens": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable to show code lenses on overdue items and items getting due today and tomorrow"
                 }
             }
         },

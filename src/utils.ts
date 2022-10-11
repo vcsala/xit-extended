@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { writeFileSync } from 'fs';
 import * as globals from './globals'
 
@@ -274,4 +275,10 @@ export function checkDate(date: string): string {
 
 export function IsValidDate(date: string): boolean {
 	return (checkDate(date) == "");
+}
+
+export function getSettings(): { to_be_saved: boolean, filename: string, enable_codelens: boolean } {
+	const config = vscode.workspace.getConfiguration('xit-extended');
+
+	return { to_be_saved: config.saveDeleted, filename: config.saveFilename, enable_codelens: config.enableCodeLens };
 }

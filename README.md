@@ -165,6 +165,10 @@ Below is a small example how to add this to your color theme (using `...` for br
 
 ## Configuration
 
-This extension provides configurations through VSCode's configuration settings. All configurations are under `xit-extended.*.`. At this moment, the configuration allows the user to decide if the items removed (by the XIT: Remove Completed and Obsolete command) are saved to a separate file. If yes, the user can also configure the name of the file (it is created in the same directory where the original *.xit file is opened from).
+This extension provides configurations through VSCode's configuration settings. All configurations are under `xit-extended.*.`. 
+
+At this moment, the configuration allows the user to decide if the items removed (by the XIT: Remove Completed and Obsolete command) are saved to a separate file. If yes, the user can also configure the name of the file (it is created in the same directory where the original *.xit file is opened from).
+
+The user can also turn on and off the code lenses to show overdue items or items getting due today or tomorrow.
 
 By default, the save flag is set to false. The default filename is `deleted.xit`.

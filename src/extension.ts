@@ -6,16 +6,10 @@ import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
 import { registerSemanticProvider } from './semantic'
 import { join, dirname } from 'path';
-import { getCurrentPeriod, syncWriteFile, Period } from './utils';
+import { getCurrentPeriod, syncWriteFile, Period, getSettings } from './utils';
 import { XitCodeLensProvider } from './codelens';
 
 let disposables: vscode.Disposable[] = [];
-
-function getSettings(): { to_be_saved: boolean, filename: string } {
-	const config = vscode.workspace.getConfiguration('xit-extended');
-
-	return { to_be_saved: config.saveDeleted, filename: config.saveFilename };
-}
 
 function clearItems(editor: vscode.TextEditor) {
 	let groups = readContent(editor.document);

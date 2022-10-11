@@ -3,13 +3,14 @@
 [//]: <> (All notable changes to the "xit-extended" extension will be documented in this file.)
 [//]: <> (Check [Keep a Changelog]\(http://keepachangelog.com/\) for recommendations on how to structure this file.)
 
-## [0.4.0] - 2022-10-10
+## [0.4.2] - 2022-10-10
 
 Feature release. Code lenses are added.
 
 ### Added
 
 - Code lenses on overdue, due today and due tomorrow tasks
+- Configuration option to turn on/off the code lenses
 
 ## [0.3.6] - 2022-10-10
 
