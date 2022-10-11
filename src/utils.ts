@@ -107,7 +107,7 @@ export function getCurrentPeriod(period: Period): string {
 			return year;
 	}
 
-	return "-> " + getToday();
+	return " -> " + getToday();
 }
 
 export function replacePart(text: string, new_part: string, start: number): string {
