@@ -8,6 +8,7 @@ import { registerSemanticProvider } from './semantic'
 import { join, dirname } from 'path';
 import { getCurrentPeriod, syncWriteFile, Period, getSettings } from './utils';
 import { XitCodeLensProvider } from './codelens';
+import { XitHoverProvider } from './hover';
 
 let disposables: vscode.Disposable[] = [];
 
@@ -127,12 +128,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.languages.registerFoldingRangeProvider({ scheme: 'file', language: 'xit' }, new XitFoldingRangeProvider());
 
-	context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider({ language: "xit" }, new XitDocumentSymbolProvider()));
+	context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider({ scheme: 'file', language: "xit" }, new XitDocumentSymbolProvider()));
 
 	const completionDisposable = vscode.languages.registerCompletionItemProvider({ scheme: 'file', language: 'xit' }, new XitCompletionItemProvider(), TAG_START);
 	disposables.push(completionDisposable);
 
     context.subscriptions.push(vscode.languages.registerCodeLensProvider({ scheme: 'file', language: 'xit' }, new XitCodeLensProvider()));
+
+	context.subscriptions.push(vscode.languages.registerHoverProvider({ scheme: 'file', language: "xit" }, new XitHoverProvider()));
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('xit.toggle', () => {

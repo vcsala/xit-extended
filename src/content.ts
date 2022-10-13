@@ -579,6 +579,16 @@ function readTask(document: vscode.TextDocument, line_no: number): XitTask | nul
 	return current_task;
 }
 
+export function readTaskContainingLine(document: vscode.TextDocument, line_no: number): XitTask | null {
+	let firstLine = findFirstLine(document, line_no);
+
+	if (firstLine > -1) {
+		return readTask(document, firstLine);
+	}
+
+	return null;
+}
+
 export function readSelectedTasks(editor: vscode.TextEditor): XitTask[] {
 	const lines = getSelectedLines(editor);
 
