@@ -3,6 +3,14 @@
 [//]: <> (All notable changes to the "xit-extended" extension will be documented in this file.)
 [//]: <> (Check [Keep a Changelog]\(http://keepachangelog.com/\) for recommendations on how to structure this file.)
 
+## [1.0.0] - 2022-10-13
+
+First major release.
+
+### Added
+
+- Configuration option to turn on/off diagnostics
+
 ## [0.4.2] - 2022-10-10
 
 Feature release. Code lenses are added.

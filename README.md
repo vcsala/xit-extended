@@ -169,6 +169,10 @@ This extension provides configurations through VSCode's configuration settings. 
 
 At this moment, the configuration allows the user to decide if the items removed (by the XIT: Remove Completed and Obsolete command) are saved to a separate file. If yes, the user can also configure the name of the file (it is created in the same directory where the original *.xit file is opened from).
 
-The user can also turn on and off the code lenses to show overdue items or items getting due today or tomorrow.
-
 By default, the save flag is set to false. The default filename is `deleted.xit`.
+
+The user can also turn on and off some of the features (they are enabled by default):
+
+- the code lenses to show overdue items or items getting due today or tomorrow
+- diagnostics to show warnings on items which does not comply with the specification
+
