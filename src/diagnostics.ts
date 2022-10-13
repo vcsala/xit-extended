@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { getRawDate } from './content';
 import * as globals from './globals'
 import { ParsingState } from './globals'
-import { checkDate } from './utils';
+import { checkDate, getSettings } from './utils';
 
 function getPriority(line: string): string {
 	const match = globals.ALT_PRIORITY_MASK.exec(line);
@@ -153,7 +153,13 @@ function checkContent(document: vscode.TextDocument): vscode.Diagnostic[] {
 }
 
 function refreshDiagnostics(document: vscode.TextDocument, xitDiagnostics: vscode.DiagnosticCollection): void {
-	const diagnostics: vscode.Diagnostic[] = checkContent(document);
+	let diagnostics: vscode.Diagnostic[] = [];
+	const config = getSettings();
+
+	if (config.enable_diagnostics) {
+		diagnostics = checkContent(document);
+	}
+
 	xitDiagnostics.set(document.uri, diagnostics);
 }
 

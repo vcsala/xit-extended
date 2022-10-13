@@ -54,7 +54,7 @@ export function getTomorrow(): string {
 	const today = new Date()
 	const tomorrow = new Date(today)
 	tomorrow.setDate(tomorrow.getDate() + 1)
-	return formatDate(tomorrow);	
+	return formatDate(tomorrow);
 }
 
 export function getYearWeekStart(year: number): Date {
@@ -101,7 +101,7 @@ export function getCurrentPeriod(period: Period): string {
 			if (week != Math.trunc(week)) {
 				week = Math.trunc(week) + 1;
 			}
-			
+
 			return year + "-W" + pad(week, 2);
 
 		case Period.Month:
@@ -277,8 +277,15 @@ export function IsValidDate(date: string): boolean {
 	return (checkDate(date) == "");
 }
 
-export function getSettings(): { to_be_saved: boolean, filename: string, enable_codelens: boolean } {
+export function getSettings(): { to_be_saved: boolean, filename: string, enable_codelens: boolean, enable_diagnostics: boolean } {
 	const config = vscode.workspace.getConfiguration('xit-extended');
 
-	return { to_be_saved: config.saveDeleted, filename: config.saveFilename, enable_codelens: config.enableCodeLens };
+	const output = {
+		to_be_saved: config.saveDeleted,
+		filename: config.saveFilename,
+		enable_codelens: config.enableCodeLens,
+		enable_diagnostics: config.enableDiagnostics
+	};
+
+	return output;
 }

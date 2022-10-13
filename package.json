@@ -85,6 +85,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable to show code lenses on overdue items and items getting due today and tomorrow"
+                },
+                "xit-extended.enableDiagnostics": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable to show warnings on items which does not comply with the specification"
                 }
             }
         },
