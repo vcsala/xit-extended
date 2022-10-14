@@ -9,8 +9,33 @@ import { join, dirname } from 'path';
 import { getCurrentPeriod, syncWriteFile, Period, getSettings } from './utils';
 import { XitCodeLensProvider } from './codelens';
 import { XitHoverProvider } from './hover';
+import { ItemStatus } from './globals';
 
 let disposables: vscode.Disposable[] = [];
+let countCompleted: number = 0;
+let myStatusBarItem: vscode.StatusBarItem;
+
+function updateStatusBarItem(): void {
+	if (countCompleted > 0) {
+		myStatusBarItem.text = `[x]it! - ${countCompleted} item(s) was completed or set as obsolete.`;
+		myStatusBarItem.show();
+	} else {
+		myStatusBarItem.hide();
+	}
+}
+
+function updateCompletedCount(prev_status: ItemStatus, new_status: ItemStatus) {
+	if (prev_status == ItemStatus.Open || prev_status == ItemStatus.Ongoing) {
+		if (new_status == ItemStatus.Completed || new_status == ItemStatus.Obsolete) {
+			countCompleted++;
+		}
+	} 
+	else if (prev_status == ItemStatus.Completed || prev_status == ItemStatus.Obsolete) {
+		if ((new_status == ItemStatus.Open || new_status == ItemStatus.Ongoing) && countCompleted > 0) {
+			countCompleted--;
+		}
+	}
+}
 
 function clearItems(editor: vscode.TextEditor) {
 	let groups = readContent(editor.document);
@@ -53,10 +78,14 @@ function shiftSelectedCheckboxes(editor: vscode.TextEditor) {
 
 	editor.edit(builder => {
 		selected_tasks.forEach((task) => {
+			const prev_status = task.get_status();
 			task.shift_status();
+			updateCompletedCount(prev_status, task.get_status());
 			task.update_task(editor.document, builder);
 		});
 	})
+
+	updateStatusBarItem();
 }
 
 function toggleSelectedCheckboxes(editor: vscode.TextEditor) {
@@ -64,10 +93,14 @@ function toggleSelectedCheckboxes(editor: vscode.TextEditor) {
 
 	editor.edit(builder => {
 		selected_tasks.forEach((task) => {
+			const prev_status = task.get_status();
 			task.toggle_status();
+			updateCompletedCount(prev_status, task.get_status());
 			task.update_task(editor.document, builder);
 		});
 	})
+
+	updateStatusBarItem();
 }
 
 function increasePriorityOfSelected(editor: vscode.TextEditor) {
@@ -121,6 +154,9 @@ function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorE
 }
 
 export function activate(context: vscode.ExtensionContext) {
+	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
+	context.subscriptions.push(myStatusBarItem);
+
 	const xitDiagnostics = vscode.languages.createDiagnosticCollection("xit");
 	context.subscriptions.push(xitDiagnostics);
 
