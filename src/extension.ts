@@ -17,7 +17,7 @@ let myStatusBarItem: vscode.StatusBarItem;
 
 function updateStatusBarItem(): void {
 	if (countCompleted > 0) {
-		myStatusBarItem.text = `[x]it! - ${countCompleted} item(s) was completed or set as obsolete.`;
+		myStatusBarItem.text = `${countCompleted} items closed`;
 		myStatusBarItem.show();
 	} else {
 		myStatusBarItem.hide();
@@ -154,7 +154,7 @@ function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorE
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
+	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1000);
 	context.subscriptions.push(myStatusBarItem);
 
 	const xitDiagnostics = vscode.languages.createDiagnosticCollection("xit");

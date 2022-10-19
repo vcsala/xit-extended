@@ -5,6 +5,18 @@
 
 ## [1.1.0] - 2022-10-13
 
+Feature release. Indicator added to the statusbar.
+
+### Added
+
+- Counter in the statusbar showing items closed (marked as completed or obsolete)
+
+### Changed
+
+- When inserting current period, space is removed before `->` (there was a space added in the previous version)
+
+## [1.1.0] - 2022-10-13
+
 Feature release. Implementing due date hover
 
 ### Added

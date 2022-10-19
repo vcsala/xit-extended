@@ -91,7 +91,7 @@ export function getNumberOfWeeks(year: number): number {
 
 export function getCurrentPeriod(period: Period): string {
 	const today = new Date();
-	const year = " -> " + today.getFullYear().toString();
+	const year = "-> " + today.getFullYear().toString();
 
 	switch (period) {
 		case Period.Week:
@@ -115,7 +115,7 @@ export function getCurrentPeriod(period: Period): string {
 			return year;
 	}
 
-	return " -> " + getToday();
+	return "-> " + getToday();
 }
 
 export function replacePart(text: string, new_part: string, start: number): string {
