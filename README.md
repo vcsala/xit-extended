@@ -99,10 +99,10 @@ All commands, except the XIT: Suggest command, is available in the editor contex
 
 The extension provides shortcuts for quickly editing task states, priorities, etc. The shortcuts are configured by default as shown below:
 
-- `ctrl+space` - Toggle checkboxes if available, else trigger editor suggestions.
-- `ctrl+alt+x` - Toggle all selected checkboxes.
-- `ctrl+alt+d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
-- `ctrl+up` - Increase priority of all selected tasks.
+- `ctrl-space` - Toggle checkboxes if available, else trigger editor suggestions.
+- `ctrl-alt-x` - Toggle all selected checkboxes.
+- `ctrl-alt-d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
+- `ctrl-up` - Increase priority of all selected tasks.
 - `ctrl+down` - Decrease priority of all selected tasks (if possible).
 - `ctrl-d ctrl-d` - Insert current day at the cursor position
 - `ctrl-d ctrl-w` - Insert current week at the cursor position
