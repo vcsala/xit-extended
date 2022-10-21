@@ -6,34 +6,68 @@ import { XitDocumentSymbolProvider } from './symbol';
 import { TAG_START, XitCompletionItemProvider } from './completion';
 import { registerSemanticProvider } from './semantic'
 import { join, dirname } from 'path';
-import { getCurrentPeriod, syncWriteFile, Period, getSettings } from './utils';
+import { getCurrentPeriod, syncWriteFile, Period, getSettings, getToday } from './utils';
 import { XitCodeLensProvider } from './codelens';
 import { XitHoverProvider } from './hover';
 import { ItemStatus } from './globals';
+import { XitDataStore, CountDetails } from './storage';
+import { countReset } from 'console';
 
 let disposables: vscode.Disposable[] = [];
-let countCompleted: number = 0;
 let myStatusBarItem: vscode.StatusBarItem;
+let storage: XitDataStore | null = null;
 
-function updateStatusBarItem(): void {
-	if (countCompleted > 0) {
-		myStatusBarItem.text = `${countCompleted} items closed`;
-		myStatusBarItem.show();
+function updateStatusBarItem(filename: string): void {
+	let counts = storage?.getCounts(filename);
+
+	if (counts !== undefined) {
+		myStatusBarItem.text = `Today: ${counts.started} started | ${counts.completed} completed | ${counts.obsolete} obsolete`;
+		myStatusBarItem.show();	
 	} else {
 		myStatusBarItem.hide();
 	}
 }
 
-function updateCompletedCount(prev_status: ItemStatus, new_status: ItemStatus) {
-	if (prev_status == ItemStatus.Open || prev_status == ItemStatus.Ongoing) {
-		if (new_status == ItemStatus.Completed || new_status == ItemStatus.Obsolete) {
-			countCompleted++;
+function updateCompletedCount(filename: string, prev_status: ItemStatus, new_status: ItemStatus)  {
+	let counts = storage?.getCounts(filename);
+
+	if (counts === undefined) {
+		counts = {
+			last_change: getToday(),
+			started: 0,
+			completed: 0,
+			obsolete: 0
 		}
-	} 
-	else if (prev_status == ItemStatus.Completed || prev_status == ItemStatus.Obsolete) {
-		if ((new_status == ItemStatus.Open || new_status == ItemStatus.Ongoing) && countCompleted > 0) {
-			countCompleted--;
+	}
+
+	if (prev_status != new_status) {
+		switch (prev_status) {
+			case ItemStatus.Obsolete:  
+				counts.obsolete--;
+				break;
+			case ItemStatus.Ongoing: 
+				counts.started--;
+				break;
+			case ItemStatus.Completed: 
+				counts.completed--;
+				break;
 		}
+
+		switch (new_status) {
+			case ItemStatus.Obsolete: 
+				counts.obsolete++;
+				break;
+			case ItemStatus.Ongoing:
+				counts.started++;
+				break;
+			case ItemStatus.Completed:
+				counts.completed++;
+				break;
+		}
+	}
+
+	if (storage !== null) {
+		storage.setCounts(filename, counts);
 	}
 }
 
@@ -75,32 +109,34 @@ function sortTasks(editor: vscode.TextEditor) {
 
 function shiftSelectedCheckboxes(editor: vscode.TextEditor) {
 	let selected_tasks = readSelectedTasks(editor);
+	let filename = editor.document.fileName;
 
 	editor.edit(builder => {
 		selected_tasks.forEach((task) => {
 			const prev_status = task.get_status();
 			task.shift_status();
-			updateCompletedCount(prev_status, task.get_status());
+			updateCompletedCount(filename, prev_status, task.get_status());
 			task.update_task(editor.document, builder);
 		});
 	})
 
-	updateStatusBarItem();
+	updateStatusBarItem(filename);
 }
 
 function toggleSelectedCheckboxes(editor: vscode.TextEditor) {
 	let selected_tasks = readSelectedTasks(editor);
+	let filename = editor.document.fileName;
 
 	editor.edit(builder => {
 		selected_tasks.forEach((task) => {
 			const prev_status = task.get_status();
 			task.toggle_status();
-			updateCompletedCount(prev_status, task.get_status());
+			updateCompletedCount(filename, prev_status, task.get_status());
 			task.update_task(editor.document, builder);
 		});
 	})
 
-	updateStatusBarItem();
+	updateStatusBarItem(filename);
 }
 
 function increasePriorityOfSelected(editor: vscode.TextEditor) {
@@ -156,6 +192,7 @@ function insertCurrentPeriod(editor: vscode.TextEditor, edit: vscode.TextEditorE
 export function activate(context: vscode.ExtensionContext) {
 	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1000);
 	context.subscriptions.push(myStatusBarItem);
+	const document = vscode.window.activeTextEditor?.document;
 
 	const xitDiagnostics = vscode.languages.createDiagnosticCollection("xit");
 	context.subscriptions.push(xitDiagnostics);
@@ -247,6 +284,17 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('xit.currentYear', (editor, edit) => insertCurrentPeriod(editor, edit, Period.Year)));
 
 	registerSemanticProvider();
+
+	storage = new XitDataStore(context.globalState);
+
+	if (document !== undefined) {
+		const counts = storage.getCounts(document.fileName);
+
+		if (counts !== undefined) {
+			updateStatusBarItem(document.fileName);
+		}
+	}
+
 }
 
 export function deactivate() {

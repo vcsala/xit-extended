@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.3.0] - 2022-10-13
+
+Feature release. More informative status on statusbar.
+
+### Changed
+
+- Changing the information on the statusbar, the number of the started (ongoing), completed and obsolete items at the given day
+
 ## [1.2.1] - 2022-10-13
 
 Feature release. Indicator added to the statusbar.
