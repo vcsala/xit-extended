@@ -6,7 +6,7 @@ Feature release. More informative status on statusbar.
 
 ### Changed
 
-- Changing the information on the statusbar, the number of the started (ongoing), completed and obsolete items at the given day
+- Changing the information on the statusbar, the number of the started (ongoing), completed and obsolete items at the given day for the given file (based on the filename)
 
 ## [1.2.1] - 2022-10-13
 
