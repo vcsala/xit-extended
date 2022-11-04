@@ -7,6 +7,7 @@ export const YEAR_MASK = /[0-9]{4}/;
 export const PRIORITY_MASK = /(?<=^\[[ x@~]\] )((?:!+\.*)|(?:\.*!+)|(?:\.+))(?: |$)/;
 export const SHORT_PRIORITY_MASK = /(?<=^\[[ x@~]\] )(?:(?:!+\.*)|(?:\.*!+)|(?:\.+))/;
 export const TAG_MASK = /#([\p{L}\p{N}_\-]+)(?:=[\p{L}\p{N}_\-]+|="[^"\n]*"|='[^'\n]*')?/ug;
+export const TAG_VALUE_MASK = /#([\p{L}\p{N}_\-]+)=([\p{L}\p{N}_\-]+|"[^"\n]*"|'[^'\n]*')?/u;
 export const CHECKBOX_MASK = /^\[[ x@~]\](?: |$)/;
 export const SIMPLE_CHECKBOX_MASK = /^\[([^\]])*\]/;
 export const INDENT_MASK = /^ {4,}\S/;

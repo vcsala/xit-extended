@@ -42,14 +42,14 @@ function updateCompletedCount(filename: string, prev_status: ItemStatus, new_sta
 
 	if (prev_status != new_status) {
 		switch (prev_status) {
-			case ItemStatus.Obsolete:  
-				counts.obsolete--;
+			case ItemStatus.Obsolete:
+				if (counts.obsolete > 0) counts.obsolete--;
 				break;
 			case ItemStatus.Ongoing: 
-				counts.started--;
+				if (counts.started > 0) counts.started--;
 				break;
 			case ItemStatus.Completed: 
-				counts.completed--;
+				if (counts.completed > 0) counts.completed--;
 				break;
 		}
 
