@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.3.2] - 2022-10-13
+
+Minor feature release.
+
+### Changed
+
+- Adding name of the weekday to the hover
+
+### Known Issues
+
+- Counters are not reliable if undo is used
+
 ## [1.3.1] - 2022-10-13
 
 Bug fix release.
