@@ -15,7 +15,7 @@ export enum Period {
 export function getDayName(due_date: String): string
 {
 	const year: number = parseInt(due_date.substring(0, 4));
-	const month: number = parseInt(due_date.substring(5, 7));
+	const month: number = parseInt(due_date.substring(5, 7)) - 1;
 	const day: number = parseInt(due_date.substring(8));
 	const date = new Date(year, month, day);
 	return date.toLocaleDateString("en-US", { weekday: 'long' });        

@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.3.2] - 2022-10-13
+## [1.3.3] - 2022-11-16
 
 Minor feature release.
 
