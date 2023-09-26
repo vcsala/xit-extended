@@ -8,7 +8,8 @@ function shiftStatus(status: ItemStatus): ItemStatus {
 		case ItemStatus.Open: return ItemStatus.Ongoing;
 		case ItemStatus.Ongoing: return ItemStatus.Completed;
 		case ItemStatus.Completed: return ItemStatus.Obsolete;
-		case ItemStatus.Obsolete: return ItemStatus.Open;
+		case ItemStatus.Obsolete: return ItemStatus.Question;
+		case ItemStatus.Question: return ItemStatus.Open;
 		default: return ItemStatus.Unknown;
 	}
 }
@@ -19,6 +20,7 @@ function toggleStatus(status: ItemStatus): ItemStatus {
 		case ItemStatus.Ongoing: return ItemStatus.Completed;
 		case ItemStatus.Completed: return ItemStatus.Open;
 		case ItemStatus.Obsolete: return ItemStatus.Completed;
+		case ItemStatus.Question: return ItemStatus.Completed;
 		default: return ItemStatus.Unknown;
 	}
 }
@@ -29,16 +31,18 @@ function translateStatus(status: ItemStatus): string {
 		case ItemStatus.Ongoing: return "@";
 		case ItemStatus.Completed: return "x";
 		case ItemStatus.Obsolete: return "~";
-		default: return "?";
+		case ItemStatus.Question: return "?";
+		default: return globals.UNKNOWN_STATUS;
 	}
 }
 
 export function compileStatus(char: string): ItemStatus {
 	switch (char) {
 		case " ": return ItemStatus.Open;
-		case "@": return ItemStatus.Ongoing; 0
+		case "@": return ItemStatus.Ongoing;
 		case "x": return ItemStatus.Completed;
 		case "~": return ItemStatus.Obsolete;
+		case "?": return ItemStatus.Question;
 	}
 
 	return ItemStatus.Unknown;
@@ -166,7 +170,7 @@ class XitTask {
 		let line = this.lines[0];
 		let char = translateStatus(status);
 
-		if (char != "?") {
+		if (char != globals.UNKNOWN_STATUS) {
 			line = line.replace(line.substring(0, 3), "[" + char + "]");
 		}
 

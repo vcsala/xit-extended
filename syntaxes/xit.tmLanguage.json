@@ -25,7 +25,7 @@
 			]
 		},
 		"open-item": {
-			"begin": "^(?:(\\[ \\])|(\\[@\\]))(?:$| (.*(?:$)))",
+			"begin": "^(?:(\\[ \\])|(\\[@\\])|(\\[\\?\\]))(?:$| (.*(?:$)))",
 			"beginCaptures": {
 				"1": {
 					"name": "storage.type.xit, markup.other.task.checkbox.open.xit"
@@ -34,6 +34,9 @@
 					"name": "keyword.contol.xit, markup.other.task.checkbox.ongoing.xit"
 				},
 				"3": {
+					"name": "keyword.type.xit, markup.other.task.checkbox.question.xit"
+				},
+				"4": {
 					"name": "source.xit"
 				}
 			},

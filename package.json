@@ -3,7 +3,7 @@
     "name": "xit-extended",
     "displayName": "xit! extended",
     "description": "Language support handling todo lists using xit! syntax.",
-    "version": "1.3.3",
+    "version": "1.4.0",
     "publisher": "vcsala",
     "repository": "https://github.com/vcsala/xit-extended",
     "engines": {
@@ -402,6 +402,10 @@
                     "checkboxOngoing": [
                         "keyword.control.xit",
                         "markup.other.task.checkbox.ongoing.xit"
+                    ],
+                    "checkboxQuestion": [
+                        "keyword.control.xit",
+                        "markup.other.task.checkbox.question.xit"
                     ],
                     "checkboxCompleted": [
                         "comment.xit",

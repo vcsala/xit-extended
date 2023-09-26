@@ -78,7 +78,7 @@ There are several commands available to help users managing their tasks:
 
 - XIT: Suggest (internal) - Toggle checkboxes if available, else trigger editor suggestions.
 - XIT: Toggle Checkbox - Toggle all selected checkboxes.
-- XIT: Shuffle Checkbox State - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
+- XIT: Shuffle Checkbox State - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~' -> '?'`.
 - XIT: Remove Completed and Obsolete - delete all obsolete and completed items.
 - XIT: Sort by Due Date and Priority - sort tasks in each group by their due date (ascending) and priority (descending).
 - XIT: Increase priority - increase the priority of the selected tasks.
@@ -101,7 +101,7 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 
 - `ctrl-space` - Toggle checkboxes if available, else trigger editor suggestions.
 - `ctrl-alt-x` - Toggle all selected checkboxes.
-- `ctrl-alt-d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~'`.
+- `ctrl-alt-d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~' -> '?'`.
 - `ctrl-up` - Increase priority of all selected tasks.
 - `ctrl+down` - Decrease priority of all selected tasks (if possible).
 - `ctrl-d ctrl-d` - Insert current day at the cursor position
@@ -117,6 +117,7 @@ If some of shortcuts are already used by your current keyboard settings you have
 ## Snippets
 
 - `u` - Unchecked (`[ ] `)
+- `q`/`?` - Question (`[?] `)
 - `a`/`@` - Ongoing (`[@] `)
 - `o`/`~` - Obsolete (`[~] `)
 - `x` - Checked (`[x] `)
@@ -134,6 +135,7 @@ A semantic tokenization is implemented, which helps to be more compliant with  t
 - `itemClosed` - The description of checked (completed) items
 - `itemObsolete` - The description of obsolete items
 - `checkboxOpen` - Open checkbox (`[ ] `)
+- `checkboxQuestion` - Open checkbox (`[?] `)
 - `checkboxOngoing` - Ongoing checkbox (`[@] `)
 - `checkboxCompleted` - Checked (completed) checkbox (`[x] `)
 - `checkboxObsolete` - Obsolete checkbox (`[~] `)
@@ -152,6 +154,7 @@ Below is a small example how to add this to your color theme (using `...` for br
 		"itemClosed": { "foreground": "#008e09", "bold": false, "italic": true, "underline": false, "strikethrough": true },
 		"itemObsolete": ...,
 		"checkboxOpen": ...,
+		"checkboxQuestion": ...,
 		"checkboxOngoing": ...,
 		"checkboxCompleted": ...,
 		"checkboxObsolete": ...,

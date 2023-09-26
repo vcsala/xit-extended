@@ -19,6 +19,16 @@
         "body": ["[@] "],
         "description": "Ongoing item"
     },
+    "Question Item (?)": {
+        "prefix": "?",
+        "body": ["[?] "],
+        "description": "Ongoing item"
+    },
+    "Question Item (q)": {
+        "prefix": "q",
+        "body": ["[?] "],
+        "description": "Ongoing item"
+    },
     "Obsolete Item (o)": {
         "prefix": "o",
         "body": ["[~] "],

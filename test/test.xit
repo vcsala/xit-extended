@@ -3,6 +3,7 @@ Status
 [@] Ongoing
 [x] Completed
 [~] Obsolete
+[?] In Question
 
 Features
 [ ] Items can be #tagged
@@ -10,11 +11,13 @@ Features
 [ ] ! Can have priorities
 [ ] !! They can represent priority levels too
 [ ] A task can have a due date -> 2024-02-29
-[ ] Due date can be overdue -> 2022-09-25
-[ ] Due date can be in weeks -> 2022-W41
-[ ] or months -> 2022-12
-[ ] or quarters -> 2023-Q1
-[ ] or even years -> 2022
+[ ] A task can have a due date (today) -> 2023-09-26
+[ ] A task can have a due date (tomorrow) -> 2023-09-27
+[ ] Due date can be overdue -> 2023-09-25
+[ ] Due date can be in weeks -> 2024-W41
+[ ] or months -> 2024-12
+[ ] or quarters -> 2024-Q1
+[ ] or even years -> 2024
 [ ] Task can be written
     in several lines 
 
@@ -215,3 +218,11 @@ Todos
 [ ] Do this
 Todos
 [ ] Do this
+
+今日は
+[ ] 小包を受け取る
+[x] 夕食を作る
+
+Ελληνικά
+[ ] 💼 δούλεψε #σκληρά
+[ ] απολαύστε τον #ήλιο ☀️

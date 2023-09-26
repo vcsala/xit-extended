@@ -9,6 +9,7 @@ const tokenTypesLegend = [
     'itemClosed',
     'itemObsolete',
     'checkboxOpen',
+    'checkboxQuestion',
     'checkboxOngoing',
     'checkboxCompleted',
     'checkboxObsolete',
@@ -32,6 +33,7 @@ interface IParsedToken {
 function translateToCheckboxScope(status: ItemStatus): string {
     switch (status) {
         case ItemStatus.Open: return "checkboxOpen";
+        case ItemStatus.Question: return "checkboxQuestion";
         case ItemStatus.Ongoing: return "checkboxOngoing";
         case ItemStatus.Completed: return "checkboxCompleted";
         case ItemStatus.Obsolete: return "checkboxObsolete";
