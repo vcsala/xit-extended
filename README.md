@@ -101,7 +101,7 @@ The extension provides shortcuts for quickly editing task states, priorities, et
 
 - `ctrl-space` - Toggle checkboxes if available, else trigger editor suggestions.
 - `ctrl-alt-x` - Toggle all selected checkboxes.
-- `ctrl-alt-d` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~' -> '?'`.
+- `shift-alt-n` - Shuffle all selected checkboxes. This will shift the checkbox state to `' ' -> '@' -> 'x' -> '~' -> '?'`.
 - `ctrl-up` - Increase priority of all selected tasks.
 - `ctrl+down` - Decrease priority of all selected tasks (if possible).
 - `ctrl-d ctrl-d` - Insert current day at the cursor position

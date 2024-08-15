@@ -207,7 +207,7 @@
             },
             {
                 "command": "xit.shuffle",
-                "key": "ctrl+alt+d",
+                "key": "shift+alt+n",
                 "when": "editorFocus && editorLangId == 'xit'"
             },
             {
